@@ -55,7 +55,7 @@ public class Header extends javax.swing.JPanel {
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
-        int result = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn thực hiện hành động này?",
+        int result = JOptionPane.showConfirmDialog(null, "Đóng ứng dụng?",
                 "Xác nhận", JOptionPane.YES_NO_OPTION);
 
         if (result == JOptionPane.YES_OPTION) {
