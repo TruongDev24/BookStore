@@ -1,6 +1,5 @@
 package com.raven.swing;
 
-import com.raven.model.StatusType;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JLabel;
@@ -19,7 +18,7 @@ public class Table extends JTable {
             @Override
             public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
                 TableHeader header = new TableHeader(o + "");
-                if (i1 == 4) {
+                if (i1 == 5) {
                     header.setHorizontalAlignment(JLabel.CENTER);
                 }
                 return header;
@@ -28,7 +27,7 @@ public class Table extends JTable {
         setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable jtable, Object o, boolean selected, boolean bln1, int i, int i1) {
-                if (i1 != 4) {
+                if (i1 != 5) {
                     Component com = super.getTableCellRendererComponent(jtable, o, selected, bln1, i, i1);
                     com.setBackground(Color.WHITE);
                     setBorder(noFocusBorder);
@@ -39,9 +38,8 @@ public class Table extends JTable {
                     }
                     return com;
                 } else {
-                    StatusType type = (StatusType) o;
-                    CellStatus cell = new CellStatus(type);
-                    return cell;
+                    // Xử lý trường hợp khi i1 là 5
+                    return super.getTableCellRendererComponent(jtable, o, selected, bln1, i, i1);
                 }
             }
         });
