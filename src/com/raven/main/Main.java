@@ -10,8 +10,13 @@ import com.raven.form.Form_QLDocGia;
 import com.raven.form.Form_QLSach;
 import com.raven.form.Form_QLDanhMuc;
 import com.raven.form.Form_Home;
+import com.raven.form.Form_Login;
+import com.raven.form.Form_QLNguoiDung;
+import com.raven.form.Form_QLPhieuMuon;
+import com.raven.form.Form_QLTheLoai;
 import java.awt.Color;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,17 +28,23 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     private Form_Home home;
-    private Form_QLDocGia form1;
-    private Form_QLSach form2;
-    private Form_QLDanhMuc form3;
+    private Form_QLSach form1;
+    private Form_QLDanhMuc form2;
+    private Form_QLTheLoai form3;
+    private Form_QLDocGia form4;
+    private Form_QLPhieuMuon form5;
+    private Form_QLNguoiDung form6;
 
     public Main() {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         home = new Form_Home();
-        form1 = new Form_QLDocGia();
-        form2 = new Form_QLSach();
-        form3 = new Form_QLDanhMuc();
+        form1 = new Form_QLSach();
+        form2 = new Form_QLDanhMuc();
+        form3 = new Form_QLTheLoai();
+        form4 = new Form_QLDocGia();
+        form5 = new Form_QLPhieuMuon();
+        form6 = new Form_QLNguoiDung();
         menu.initMoving(Main.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
@@ -46,6 +57,14 @@ public class Main extends javax.swing.JFrame {
                     setForm(form2);
                 } else if (index == 5) {
                     setForm(form3);
+                } else if (index == 6) {
+                    setForm(form4);
+                } else if (index == 7) {
+                    setForm(form5);
+                } else if (index == 8) {
+                    setForm(form6);
+                } else if (index == 15) {
+                    logout();
                 }
             }
         });
@@ -58,6 +77,18 @@ public class Main extends javax.swing.JFrame {
         mainPanel.add(com);
         mainPanel.repaint();
         mainPanel.revalidate();
+    }
+
+    private void logout() {
+        int result = JOptionPane.showConfirmDialog(null, "Đăng xuất ?",
+                "Xác nhận", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+        if (result == JOptionPane.YES_OPTION) {
+            Form_Login lg = new Form_Login();
+            lg.setVisible(true);
+            lg.setLocationRelativeTo(null);
+            this.dispose();
+        }
     }
 
     /**

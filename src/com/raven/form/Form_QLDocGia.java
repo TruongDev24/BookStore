@@ -44,17 +44,17 @@ public class Form_QLDocGia extends javax.swing.JPanel {
         jButton1.setBackground(new java.awt.Color(18, 64, 118));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setForeground(new java.awt.Color(249, 232, 151));
-        jButton1.setText("jButton1");
+        jButton1.setText("Xóa");
 
         jButton2.setBackground(new java.awt.Color(18, 64, 118));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton2.setForeground(new java.awt.Color(249, 232, 151));
-        jButton2.setText("jButton2");
+        jButton2.setText("Sửa");
 
         jButton3.setBackground(new java.awt.Color(18, 64, 118));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton3.setForeground(new java.awt.Color(249, 232, 151));
-        jButton3.setText("jButton3");
+        jButton3.setText("Thêm mới");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -69,7 +69,7 @@ public class Form_QLDocGia extends javax.swing.JPanel {
 
         jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel2.setText("Standard Table Design");
+        jLabel2.setText("Quản lí độc giả");
 
         spTable.setBorder(null);
 
@@ -78,7 +78,7 @@ public class Form_QLDocGia extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Name", "Email", "User Type", "Joined", "Status"
+                "Tên", "Giới tính", "Lớp", "SĐT", "Ngày thêm"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -127,7 +127,7 @@ public class Form_QLDocGia extends javax.swing.JPanel {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
