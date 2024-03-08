@@ -21,6 +21,7 @@ public class Form_Home extends javax.swing.JPanel {
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+        
         table.addRow(new Object[]{"Mike Bhand", "mikebhand@gmail.com", "Admin", "25 Apr,2018", 99 , 99});
 //        table.addRow(new Object[]{"Andrew Strauss", "andrewstrauss@gmail.com", "Editor", "25 Apr,2018", StatusType.APPROVED});
 //        table.addRow(new Object[]{"Ross Kopelman", "rosskopelman@gmail.com", "Subscriber", "25 Apr,2018", StatusType.APPROVED});
@@ -77,7 +78,7 @@ public class Form_Home extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Tên sinh viên", "Ngày mượn", "Hạn trả", "Tiền thuê", "Tiền phạt", "Trạng thái"
+                "Tên sinh viên", "Ngày mượn", "Hạn trả", "Ngày trả", "Tiền thuê", "Trạng thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -91,11 +92,6 @@ public class Form_Home extends javax.swing.JPanel {
         table.setSelectionBackground(new java.awt.Color(204, 204, 204));
         table.getTableHeader().setReorderingAllowed(false);
         spTable.setViewportView(table);
-        if (table.getColumnModel().getColumnCount() > 0) {
-            table.getColumnModel().getColumn(0).setMinWidth(140);
-            table.getColumnModel().getColumn(1).setMinWidth(110);
-            table.getColumnModel().getColumn(2).setMinWidth(110);
-        }
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
         panelBorder1.setLayout(panelBorder1Layout);
