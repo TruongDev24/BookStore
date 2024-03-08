@@ -14,6 +14,7 @@ import com.raven.form.Form_Login;
 import com.raven.form.Form_QLNguoiDung;
 import com.raven.form.Form_QLPhieuMuon;
 import com.raven.form.Form_QLTheLoai;
+import com.raven.form.Form_QuyDinh;
 import java.awt.Color;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -34,6 +35,7 @@ public class Main extends javax.swing.JFrame {
     private Form_QLDocGia form4;
     private Form_QLPhieuMuon form5;
     private Form_QLNguoiDung form6;
+    private Form_QuyDinh form7;
 
     public Main() {
         initComponents();
@@ -45,6 +47,7 @@ public class Main extends javax.swing.JFrame {
         form4 = new Form_QLDocGia();
         form5 = new Form_QLPhieuMuon();
         form6 = new Form_QLNguoiDung();
+        form7 = new Form_QuyDinh();
         menu.initMoving(Main.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
@@ -63,6 +66,8 @@ public class Main extends javax.swing.JFrame {
                     setForm(form5);
                 } else if (index == 8) {
                     setForm(form6);
+                } else if (index == 9) {
+                    setForm(form7);
                 } else if (index == 15) {
                     logout();
                 }
