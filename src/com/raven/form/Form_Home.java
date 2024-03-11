@@ -69,7 +69,7 @@ public class Form_Home extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Phiếu mượn quá hạn");
+        jLabel1.setText("Sách bán chạy");
 
         spTable.setBorder(null);
 
@@ -78,11 +78,11 @@ public class Form_Home extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Tên sinh viên", "Ngày mượn", "Hạn trả", "Ngày trả", "Tiền thuê", "Trạng thái"
+                "Mã sách", "Tên sách", "Tác giả", "Thể loại", "Số lượng bán ra"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

@@ -30,25 +30,27 @@ public class Menu extends javax.swing.JPanel {
 
     private void init() {
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("1", "Home", Model_Menu.MenuType.MENU));
+//        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+        listMenu1.addItem(new Model_Menu("1", "Trang chủ", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("6", "Bán hàng", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("8", "NXB, tác giả", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("2", "Quản lí sách", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("3", "Quản lí danh mục", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("4", "Quản lí thể loại", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("5", "Quản lí độc giả", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("6", "Quản lí phiếu mượn", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("7", "Account", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("8", "Quy định", Model_Menu.MenuType.MENU));
-//        listMenu1.addItem(new Model_Menu("9", "More", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("3", "Thể loại", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("4", "Hóa đơn", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("5", "Khách hàng", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("6", "Khuyến mãi", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("7", "Quản lí tài khoản", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("9", "Tài khoản của tôi", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+//        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+//        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         
         listMenu1.addItem(new Model_Menu("10", "Logout", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+//        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
     }
 
     @SuppressWarnings("unchecked")

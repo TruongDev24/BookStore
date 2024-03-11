@@ -9,12 +9,12 @@ package com.raven.form;
  *
  * @author RAVEN
  */
-public class Form_QLDocGia extends javax.swing.JPanel {
+public class Form_QLKhachHang extends javax.swing.JPanel {
 
     /**
      * Creates new form Form_1
      */
-    public Form_QLDocGia() {
+    public Form_QLKhachHang() {
         initComponents();
     }
 
@@ -69,7 +69,7 @@ public class Form_QLDocGia extends javax.swing.JPanel {
 
         jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel2.setText("Quản lí độc giả");
+        jLabel2.setText("Quản lí khách hàng");
 
         spTable.setBorder(null);
 
@@ -78,17 +78,18 @@ public class Form_QLDocGia extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Tên", "Giới tính", "Lớp", "SĐT", "Ngày thêm"
+                "Tên", "Giới tính", "SĐT", "Ngày thêm"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        table.getTableHeader().setReorderingAllowed(false);
         spTable.setViewportView(table);
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
@@ -97,12 +98,10 @@ public class Form_QLDocGia extends javax.swing.JPanel {
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(panelBorder1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 906, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(spTable, javax.swing.GroupLayout.PREFERRED_SIZE, 876, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

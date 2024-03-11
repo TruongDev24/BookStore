@@ -6,15 +6,16 @@
 package com.raven.main;
 
 import com.raven.event.EventMenuSelected;
-import com.raven.form.Form_QLDocGia;
+import com.raven.form.Form_QLKhachHang;
 import com.raven.form.Form_QLSach;
-import com.raven.form.Form_QLDanhMuc;
+import com.raven.form.Form_QLTheLoai;
 import com.raven.form.Form_Home;
 import com.raven.form.Form_Login;
 import com.raven.form.Form_QLNguoiDung;
-import com.raven.form.Form_QLPhieuMuon;
-import com.raven.form.Form_QLTheLoai;
-import com.raven.form.Form_QuyDinh;
+import com.raven.form.Form_QLHoaDon;
+import com.raven.form.Form_QLKhuyenMai;
+import com.raven.form.Form_QLNXB_TG;
+import com.raven.form.Form_MyAccount;
 import java.awt.Color;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -29,31 +30,35 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     private Form_Home home;
-    private Form_QLSach form1;
-    private Form_QLDanhMuc form2;
+    private Form_QLNXB_TG form1;
+    private Form_QLSach form2;
     private Form_QLTheLoai form3;
-    private Form_QLDocGia form4;
-    private Form_QLPhieuMuon form5;
-    private Form_QLNguoiDung form6;
-    private Form_QuyDinh form7;
+    private Form_QLHoaDon form4;
+    private Form_QLKhachHang form5;
+    private Form_QLKhuyenMai form6;
+    private Form_QLNguoiDung form7;
+//    private Form_MyAccount form8;
 
     public Main() {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         home = new Form_Home();
-        form1 = new Form_QLSach();
-        form2 = new Form_QLDanhMuc();
+        form1 = new Form_QLNXB_TG();
+        form2 = new Form_QLSach();
         form3 = new Form_QLTheLoai();
-        form4 = new Form_QLDocGia();
-        form5 = new Form_QLPhieuMuon();
-        form6 = new Form_QLNguoiDung();
-        form7 = new Form_QuyDinh();
+        form4 = new Form_QLHoaDon();
+        form5 = new Form_QLKhachHang();
+        form6 = new Form_QLKhuyenMai();
+        form7 = new Form_QLNguoiDung();
+//        form8 = new Form_MyAccount();
         menu.initMoving(Main.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
-                if (index == 2) {
+                if (index == 1) {
                     setForm(home);
+                } else if (index == 2) {
+//                    setForm(form1);
                 } else if (index == 3) {
                     setForm(form1);
                 } else if (index == 4) {
@@ -68,6 +73,9 @@ public class Main extends javax.swing.JFrame {
                     setForm(form6);
                 } else if (index == 9) {
                     setForm(form7);
+                } else if (index == 10) {
+//                    setForm(form8);
+                    account();
                 } else if (index == 15) {
                     logout();
                 }
@@ -94,6 +102,12 @@ public class Main extends javax.swing.JFrame {
             lg.setLocationRelativeTo(null);
             this.dispose();
         }
+    }
+
+    private void account() {
+        Form_MyAccount ac = new Form_MyAccount(this, true);
+        ac.setVisible(true);
+        ac.setLocationRelativeTo(null);
     }
 
     /**
