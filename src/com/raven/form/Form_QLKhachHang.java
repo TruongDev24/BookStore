@@ -5,17 +5,62 @@
  */
 package com.raven.form;
 
+import com.raven.Model2.khachHang;
+import com.raven.Service.khachHang_Service;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+
 /**
  *
  * @author RAVEN
  */
 public class Form_QLKhachHang extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Form_1
-     */
+    private DefaultTableModel dtm = new DefaultTableModel();
+    private List<khachHang> listKH = new ArrayList<>();
+    private final khachHang_Service nvService = new khachHang_Service();
+
     public Form_QLKhachHang() {
         initComponents();
+        dtm = (DefaultTableModel) table.getModel();
+        listKH = nvService.getAll_KH();
+        ShowData(listKH);
+    }
+
+    private void ShowData(List<khachHang> listkh) {
+        dtm.setRowCount(0);
+        listkh.forEach(s -> {
+            String gioiTinh = "";
+            if (s.getGioi_tinh() == 0) {
+                gioiTinh = "Nam";
+            } else if (s.getGioi_tinh() == 1) {
+                gioiTinh = "Nữ";
+            }
+            dtm.addRow(new Object[]{
+                s.getId(),
+                s.getTen_khach(),
+                gioiTinh,
+                s.getSdt(),
+                s.getNgay_them(),
+                s.getTrang_thai()
+            });
+        });
     }
 
     /**
@@ -28,11 +73,11 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
+        btnXoa = new javax.swing.JButton();
+        btnSua = new javax.swing.JButton();
+        btnThem = new javax.swing.JButton();
+        cbxLoc = new javax.swing.JComboBox<>();
+        txtTimKiem = new javax.swing.JTextField();
         panelBorder1 = new com.raven.swing.PanelBorder();
         jLabel2 = new javax.swing.JLabel();
         spTable = new javax.swing.JScrollPane();
@@ -41,29 +86,39 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
 
         setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
 
-        jButton1.setBackground(new java.awt.Color(18, 64, 118));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(249, 232, 151));
-        jButton1.setText("Xóa");
-
-        jButton2.setBackground(new java.awt.Color(18, 64, 118));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(249, 232, 151));
-        jButton2.setText("Sửa");
-
-        jButton3.setBackground(new java.awt.Color(18, 64, 118));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(249, 232, 151));
-        jButton3.setText("Thêm mới");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnXoa.setBackground(new java.awt.Color(18, 64, 118));
+        btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnXoa.setForeground(new java.awt.Color(249, 232, 151));
+        btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnXoaActionPerformed(evt);
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        btnSua.setBackground(new java.awt.Color(18, 64, 118));
+        btnSua.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSua.setForeground(new java.awt.Color(249, 232, 151));
+        btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
-        jTextField1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnThem.setBackground(new java.awt.Color(18, 64, 118));
+        btnThem.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnThem.setForeground(new java.awt.Color(249, 232, 151));
+        btnThem.setText("Thêm mới");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
+
+        cbxLoc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
+
+        txtTimKiem.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
         panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -78,11 +133,11 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Tên", "Giới tính", "SĐT", "Ngày thêm"
+                "id", "Tên", "Giới tính", "SĐT", "Ngày thêm", "Trạng thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                true, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -90,6 +145,11 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
             }
         });
         table.getTableHeader().setReorderingAllowed(false);
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMouseClicked(evt);
+            }
+        });
         spTable.setViewportView(table);
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
@@ -123,15 +183,15 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
                 .addGap(31, 31, 31)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbxLoc, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                .addComponent(jButton3)
+                .addComponent(btnThem)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btnSua)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btnXoa)
                 .addGap(27, 27, 27))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -149,11 +209,11 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)
-                            .addComponent(jButton3))))
+                            .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxLoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnXoa)
+                            .addComponent(btnSua)
+                            .addComponent(btnThem))))
                 .addContainerGap(558, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -174,22 +234,265 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        // Tạo một dialog để nhập dữ liệu mới
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Thêm mới khách hàng");
+
+        // Tạo các trường dữ liệu
+        JTextField txtTenKH = new JTextField();
+        JTextField txtSDT = new JTextField();
+        JTextField txtNgayThem = new JTextField();
+        JRadioButton rdoNam = new JRadioButton("Nam");
+        JRadioButton rdoNu = new JRadioButton("Nữ");
+        JComboBox<String> cbxTrangThai = new JComboBox<>(new String[]{"Active", "Inactive"});
+        JTextField txtID = new JTextField();
+        JButton btnSubmit = new JButton("Submit");
+
+        // Thiết lập layout cho dialog
+        dialog.setLayout(new GridLayout(7, 2));
+
+        // Thêm các trường dữ liệu và nút vào dialog
+        dialog.add(new JLabel("Tên khách hàng:"));
+        dialog.add(txtTenKH);
+        dialog.add(new JLabel("Số điện thoại:"));
+        dialog.add(txtSDT);
+        dialog.add(new JLabel("Ngày thêm:"));
+        dialog.add(txtNgayThem);
+        dialog.add(new JLabel("Giới tính:"));
+        ButtonGroup group = new ButtonGroup();
+        group.add(rdoNam);
+        group.add(rdoNu);
+        JPanel panelGioiTinh = new JPanel();
+        panelGioiTinh.add(rdoNam);
+        panelGioiTinh.add(rdoNu);
+        dialog.add(panelGioiTinh);
+        dialog.add(new JLabel("Trạng thái:"));
+        dialog.add(cbxTrangThai);
+        dialog.add(btnSubmit);
+
+        // Xử lý sự kiện khi nút "Submit" được nhấn
+        btnSubmit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Lấy thông tin từ các trường dữ liệu
+                String id = txtID.getText().trim();
+                String tenKH = txtTenKH.getText().trim();
+                String sdt = txtSDT.getText().trim();
+                String ngayThem = txtNgayThem.getText().trim();
+                int gioiTinh = rdoNam.isSelected() ? 0 : 1;
+                String trangThai = cbxTrangThai.getSelectedItem().toString();
+
+                // Kiểm tra tính hợp lệ của dữ liệu
+                if (tenKH.isEmpty() || sdt.isEmpty() || ngayThem.isEmpty()) {
+                    JOptionPane.showMessageDialog(dialog, "Vui lòng nhập đầy đủ thông tin.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (!sdt.matches("\\d{10}")) {
+                    JOptionPane.showMessageDialog(dialog, "Số điện thoại không hợp lệ. Vui lòng nhập lại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                // Kiểm tra ngày thêm có đúng định dạng không (ví dụ: dd/MM/yyyy)
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+                dateFormat.setLenient(false);
+                try {
+                    dateFormat.parse(ngayThem);
+                } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(dialog, "Ngày thêm không hợp lệ. Vui lòng nhập lại theo định dạng yyyy-mm-dd.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Tạo đối tượng khách hàng mới
+                khachHang khachHangMoi = new khachHang(id, tenKH, sdt, ngayThem, gioiTinh, trangThai);
+
+                // Thêm khách hàng mới vào danh sách và cập nhật bảng
+                nvService.add(khachHangMoi);
+                listKH.add(khachHangMoi);
+
+                // Đóng dialog sau khi thêm thành công
+                dialog.dispose();
+                ShowData(listKH);
+            }
+        });
+
+        // Thiết lập kích thước và hiển thị dialog
+        dialog.setSize(300, 250);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
+        JTextField txtTenKH = new JTextField();
+        JTextField txtSDT = new JTextField();
+        JTextField txtNgayThem = new JTextField();
+        JRadioButton rdoNam = new JRadioButton("Nam");
+        JRadioButton rdoNu = new JRadioButton("Nữ");
+        JTextField txtID = new JTextField();
+        int i = table.getSelectedRow();
+        txtID.setText(table.getValueAt(i, 0).toString());
+        txtTenKH.setText(table.getValueAt(i, 1).toString());
+        String gt = table.getValueAt(i, 2).toString();
+        if (gt.equalsIgnoreCase("0")) {
+            rdoNam.setSelected(true);
+            rdoNu.setSelected(false);
+        } else {
+            rdoNam.setSelected(true);
+            rdoNu.setSelected(false);
+        }
+        txtSDT.setText(table.getValueAt(i, 3).toString());
+        txtNgayThem.setText(table.getValueAt(i, 4).toString());
+        String trangThai = table.getValueAt(i, 5).toString();
+        
+    }//GEN-LAST:event_tableMouseClicked
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        int selectedIndex = table.getSelectedRow();
+        if (selectedIndex != -1) {
+            // Lấy thông tin của khách hàng từ dòng được chọn
+            String id = table.getValueAt(selectedIndex, 0).toString();
+            String tenKH = table.getValueAt(selectedIndex, 1).toString();
+            String gioiTinh = table.getValueAt(selectedIndex, 2).toString();
+            String sdt = table.getValueAt(selectedIndex, 3).toString();
+            String ngayThem = table.getValueAt(selectedIndex, 4).toString();
+            String trangThai = table.getValueAt(selectedIndex, 5).toString();
+
+            // Tạo dialog sửa và hiển thị thông tin của khách hàng
+            JDialog dialog = new JDialog();
+            dialog.setTitle("Sửa thông tin khách hàng");
+
+            // Tạo các trường dữ liệu
+            JTextField txtTenKH = new JTextField(tenKH);
+            JTextField txtSDT = new JTextField(sdt);
+            JTextField txtNgayThem = new JTextField(ngayThem);
+            JRadioButton rdoNam = new JRadioButton("Nam");
+            JRadioButton rdoNu = new JRadioButton("Nữ");
+            if (gioiTinh.equalsIgnoreCase("Nam")) {
+                rdoNam.setSelected(true);
+            } else {
+                rdoNu.setSelected(true);
+            }
+            JComboBox<String> cbxTrangThai = new JComboBox<>(new String[]{"Active", "Inactive"});
+            cbxTrangThai.setSelectedItem(trangThai);
+
+            JTextField txtID = new JTextField(id);
+            txtID.setEditable(false); // Không cho phép chỉnh sửa ID
+
+            // Thiết lập layout cho dialog
+            dialog.setLayout(new GridLayout(7, 2));
+
+            // Thêm các trường dữ liệu và nút vào dialog
+            dialog.add(new JLabel("ID:"));
+            dialog.add(txtID);
+            dialog.add(new JLabel("Tên khách hàng:"));
+            dialog.add(txtTenKH);
+            dialog.add(new JLabel("Số điện thoại:"));
+            dialog.add(txtSDT);
+            dialog.add(new JLabel("Ngày thêm:"));
+            dialog.add(txtNgayThem);
+            dialog.add(new JLabel("Giới tính:"));
+            ButtonGroup group = new ButtonGroup();
+            group.add(rdoNam);
+            group.add(rdoNu);
+            JPanel panelGioiTinh = new JPanel();
+            panelGioiTinh.add(rdoNam);
+            panelGioiTinh.add(rdoNu);
+            dialog.add(panelGioiTinh);
+            dialog.add(new JLabel("Trạng thái:"));
+            dialog.add(cbxTrangThai);
+
+            JButton btnSubmit = new JButton("Submit");
+            dialog.add(btnSubmit);
+
+            // Xử lý sự kiện khi nút "Submit" được nhấn
+            btnSubmit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Lấy thông tin được chỉnh sửa từ các trường dữ liệu
+                    String tenKH = txtTenKH.getText().trim();
+                    String sdt = txtSDT.getText().trim();
+                    String ngayThem = txtNgayThem.getText().trim();
+                    int gioiTinh = rdoNam.isSelected() ? 0 : 1;
+                    String trangThai = cbxTrangThai.getSelectedItem().toString();
+
+                    // Kiểm tra tính hợp lệ của dữ liệu (giống như trong phần thêm mới)
+                    if (tenKH.isEmpty() || sdt.isEmpty() || ngayThem.isEmpty()) {
+                        JOptionPane.showMessageDialog(dialog, "Vui lòng nhập đầy đủ thông tin.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    if (!sdt.matches("\\d{10}")) {
+                        JOptionPane.showMessageDialog(dialog, "Số điện thoại không hợp lệ. Vui lòng nhập lại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    // Kiểm tra ngày thêm có đúng định dạng không (ví dụ: dd/MM/yyyy)
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+                    dateFormat.setLenient(false);
+                    try {
+                        dateFormat.parse(ngayThem);
+                    } catch (ParseException ex) {
+                        JOptionPane.showMessageDialog(dialog, "Ngày thêm không hợp lệ. Vui lòng nhập lại theo định dạng yyyy-mm-dd.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Tạo đối tượng khách hàng mới
+                    khachHang khachHangMoi = new khachHang(id, tenKH, sdt, ngayThem, gioiTinh, trangThai);
+
+                    // Cập nhật thông tin của khách hàng
+                    nvService.update(khachHangMoi);
+
+                    // Cập nhật lại dữ liệu trên bảng
+                    listKH.set(selectedIndex, khachHangMoi);
+                    ShowData(listKH);
+
+                    // Đóng dialog sau khi sửa thành công
+                    dialog.dispose();
+                }
+            });
+
+            // Thiết lập kích thước và hiển thị dialog
+            dialog.setSize(300, 250);
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng để sửa.");
+        }
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        int selectedIndex = table.getSelectedRow();
+        if (selectedIndex != -1) {
+            int idNhanVien = Integer.parseInt(table.getValueAt(selectedIndex, 0).toString());
+
+            int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa khách hàng này?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                // Set trạng thái của nhân viên thành "Đã nghỉ"
+                boolean updateStatus = nvService.updateStatus(idNhanVien, "Inactive");
+
+                if (updateStatus) {
+                    JOptionPane.showMessageDialog(this, "Xóa thành công. Khách hàng đã chuyển sang trạng thái 'Inactive'.");
+                    listKH = nvService.getAll_KH();
+                    ShowData(listKH);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Xóa thất bại.");
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một nhân viên để xóa.");
+        }
+    }//GEN-LAST:event_btnXoaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btnSua;
+    private javax.swing.JButton btnThem;
+    private javax.swing.JButton btnXoa;
+    private javax.swing.JComboBox<String> cbxLoc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     private com.raven.swing.PanelBorder panelBorder1;
     private javax.swing.JScrollPane spTable;
     private com.raven.swing.Table table;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 }

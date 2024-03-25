@@ -13,14 +13,17 @@ import java.sql.SQLException;
  * @author LENOVO
  */
 public class DBConnect {
+    private static final String server = "DAOTHANGMINH\\SQLEXPRESS";
+    private static final String port = "1433";
+    private static final String db = "BookStore";
     private static final String user = "sa";
-    private static final String pass = "truong2004";
+    private static final String paas = "sa";
     
     public static Connection getConnection(){
-        String url = "jdbc:sqlserver://localhost\\TRUONGLEVAN:1433;databaseName=Lib_manager;encryt=true;trustserverCertificate=true;";
-        try{
-            return DriverManager.getConnection(url, user, pass);
-        }catch(SQLException e){
+        String url = "jdbc:sqlserver://" + server + ":" + port + ";databaseName=" + db + ";encrypt=true;trustServerCertificate=true;";
+        try {
+            return DriverManager.getConnection(url, user, paas);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;

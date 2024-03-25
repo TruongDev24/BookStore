@@ -5,17 +5,78 @@
  */
 package com.raven.form;
 
+import com.raven.Model2.nguoiDung;
+import com.raven.Service.NguoiDung_Service;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author RAVEN
  */
 public class Form_QLNguoiDung extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Form_1
-     */
+    private DefaultTableModel dtm = new DefaultTableModel();
+    private List<nguoiDung> listNV = new ArrayList<>();
+    private final NguoiDung_Service nvService = new NguoiDung_Service();
+
     public Form_QLNguoiDung() {
         initComponents();
+        dtm = (DefaultTableModel) table.getModel();
+        listNV = nvService.getAll_KH();
+        ShowData(listNV);
+    }
+
+    private void ShowData(List<nguoiDung> listnv) {
+        dtm.setRowCount(0);
+        listnv.forEach(s -> {
+            String gioiTinh = "";
+            if (s.getGioi_tinh() == 0) {
+                gioiTinh = "Nam";
+            } else if (s.getGioi_tinh() == 1) {
+                gioiTinh = "Nữ";
+            }
+            String vaitro = "";
+            if (s.getId_vaitro() == 1) {
+                vaitro = "Quản lý";
+            } else if (s.getId_vaitro() == 2) {
+                vaitro = "Nhân viên bán hàng";
+            } else if (s.getId_vaitro() == 3) {
+                vaitro = "Kế toán";
+            }
+            dtm.addRow(new Object[]{
+                s.getCccd(),
+                s.getTen_nv(),
+                gioiTinh,
+                s.getUsername(),
+                s.getPassword(),
+                vaitro,
+                s.getTrang_thai()
+            });
+        });
     }
 
     /**
@@ -28,11 +89,11 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
+        btnXoa = new javax.swing.JButton();
+        btnSua = new javax.swing.JButton();
+        btnThem = new javax.swing.JButton();
+        cbxTrangThai = new javax.swing.JComboBox<>();
+        btnTK = new javax.swing.JTextField();
         panelBorder1 = new com.raven.swing.PanelBorder();
         jLabel2 = new javax.swing.JLabel();
         spTable = new javax.swing.JScrollPane();
@@ -41,29 +102,39 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
 
         setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
 
-        jButton1.setBackground(new java.awt.Color(18, 64, 118));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(249, 232, 151));
-        jButton1.setText("Xóa");
-
-        jButton2.setBackground(new java.awt.Color(18, 64, 118));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(249, 232, 151));
-        jButton2.setText("Sửa");
-
-        jButton3.setBackground(new java.awt.Color(18, 64, 118));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(249, 232, 151));
-        jButton3.setText("Thêm mới");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnXoa.setBackground(new java.awt.Color(18, 64, 118));
+        btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnXoa.setForeground(new java.awt.Color(249, 232, 151));
+        btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnXoaActionPerformed(evt);
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        btnSua.setBackground(new java.awt.Color(18, 64, 118));
+        btnSua.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSua.setForeground(new java.awt.Color(249, 232, 151));
+        btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
-        jTextField1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnThem.setBackground(new java.awt.Color(18, 64, 118));
+        btnThem.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnThem.setForeground(new java.awt.Color(249, 232, 151));
+        btnThem.setText("Thêm mới");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
+
+        cbxTrangThai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive", " " }));
+
+        btnTK.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
         panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -78,15 +149,20 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Tên", "Giới tính", "username", "password", "Vai trò", "Trạng thái"
+                "cccd", "Tên", "Giới tính", "username", "password", "Vai trò", "Trạng thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMouseClicked(evt);
             }
         });
         spTable.setViewportView(table);
@@ -97,10 +173,12 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(spTable, javax.swing.GroupLayout.PREFERRED_SIZE, 877, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addComponent(jLabel2)
+                .addContainerGap(725, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createSequentialGroup()
+                .addContainerGap(35, Short.MAX_VALUE)
+                .addComponent(spTable, javax.swing.GroupLayout.PREFERRED_SIZE, 877, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,15 +200,15 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
                 .addGap(31, 31, 31)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnTK, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbxTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                .addComponent(jButton3)
+                .addComponent(btnThem)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btnSua)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btnXoa)
                 .addGap(27, 27, 27))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -148,11 +226,11 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)
-                            .addComponent(jButton3))))
+                            .addComponent(btnTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnXoa)
+                            .addComponent(btnSua)
+                            .addComponent(btnThem))))
                 .addContainerGap(558, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -173,20 +251,351 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        JTextField txtCccd = new JTextField();
+        JTextField txtTenNV = new JTextField();
+        JTextField txtUsername = new JTextField();
+        JPasswordField txtPassWord = new JPasswordField();
+        JTextField txtEmail = new JTextField();
+        JTextField txtNgayDangki = new JTextField();
+        JTextField txtSdt = new JTextField();
+        JTextField txtNgaySinh = new JTextField();
+        String[] gioiTinhOptions = {"Nam", "Nữ"};
+        JComboBox<String> cbxGioiTinh = new JComboBox<>(gioiTinhOptions);
+        String[] VaitroOptions = {"Quản lý", "Nhân viên bán hàng", "Kế toán"};
+        JComboBox<String> cbxvaiTro = new JComboBox<>(VaitroOptions);
+
+        JPanel panel = new JPanel(new GridLayout(0, 1));
+        panel.setPreferredSize(new Dimension(400, 500));
+        panel.add(new JLabel("Cccd:"));
+        panel.add(txtCccd);
+        panel.add(new JLabel("Tên nhân viên:"));
+        panel.add(txtTenNV);
+        panel.add(new JLabel("Username:"));
+        panel.add(txtUsername);
+        panel.add(new JLabel("Email:"));
+        panel.add(txtEmail);
+        panel.add(new JLabel("Ngày đăng ký:"));
+        panel.add(txtNgayDangki);
+        panel.add(new JLabel("Sdt:"));
+        panel.add(txtSdt);
+        panel.add(new JLabel("Ngày sinh:"));
+        panel.add(txtNgaySinh);
+        panel.add(new JLabel("Password:"));
+        panel.add(txtPassWord);
+        panel.add(new JLabel("Giới tính:"));
+        panel.add(cbxGioiTinh);
+        panel.add(new JLabel("Vai trò:"));
+        panel.add(cbxvaiTro);
+        JButton btnChonAnh = new JButton("Chọn ảnh"); // Thêm nút chọn ảnh
+        JLabel lblHinhAnh = new JLabel(); // Tạo JLabel để hiển thị hình ảnh
+        panel.add(new JLabel("Hình ảnh:"));
+        panel.add(btnChonAnh);
+        panel.add(lblHinhAnh);
+        btnChonAnh.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Xử lý sự kiện khi người dùng nhấn nút chọn ảnh
+                chooseImage(lblHinhAnh);
+            }
+
+            private void chooseImage(JLabel lblHinhAnh) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "jpg", "jpeg", "png", "gif");
+                fileChooser.setFileFilter(filter);
+
+                // Sử dụng null như là parent component thay vì "this"
+                int result = fileChooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    String imagePath = selectedFile.getAbsolutePath();
+                    loadImageFromComputer(imagePath, lblHinhAnh);
+                }
+            }
+
+            private void loadImageFromComputer(String imagePath, JLabel lblHinhAnh) {
+                try {
+                    ImageIcon imageIcon = new ImageIcon(imagePath);
+                    Image image = imageIcon.getImage();
+                    Image scaledImage = image.getScaledInstance(lblHinhAnh.getWidth(), lblHinhAnh.getHeight(), Image.SCALE_SMOOTH);
+                    lblHinhAnh.setIcon(new ImageIcon(scaledImage));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        int result = JOptionPane.showConfirmDialog(null, panel, "Thêm mới người dùng",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            String cccd = txtCccd.getText();
+            String tenNV = txtTenNV.getText();
+            String username = txtUsername.getText();
+            String email = txtEmail.getText();
+            String ngayDangKi = txtNgayDangki.getText();
+            String sdt = txtSdt.getText();
+            String ngaySinh = txtNgaySinh.getText();
+            String password = new String(txtPassWord.getPassword());
+            String gioiTinh = (String) cbxGioiTinh.getSelectedItem();
+            String vaiTro = (String) cbxvaiTro.getSelectedItem();
+            String trangThai = (String) cbxTrangThai.getSelectedItem();
+            String hinhAnh = lblHinhAnh.getText(); // Lấy đường dẫn hình ảnh từ JLabel
+
+            int roleId = -1; // Giá trị mặc định cho vai trò không hợp lệ
+            switch (vaiTro) {
+                case "Quản lý":
+                    roleId = 1;
+                    break;
+                case "Nhân viên bán hàng":
+                    roleId = 2;
+                    break;
+                case "Kế toán":
+                    roleId = 3;
+                    break;
+                default:
+                    break;
+            }
+                // Tạo một đối tượng nguoiDung mới với các giá trị đã nhập
+                nguoiDung newNguoiDung = new nguoiDung();
+                newNguoiDung.setCccd(cccd);
+                newNguoiDung.setTen_nv(tenNV);
+                newNguoiDung.setUsername(username);
+                newNguoiDung.setPassword(password);
+                newNguoiDung.setEmail(email);
+                newNguoiDung.setNgay_dangki(ngayDangKi);
+                newNguoiDung.setSdt(sdt);
+                newNguoiDung.setNgay_sinh(ngaySinh);
+                newNguoiDung.setGioi_tinh(gioiTinh.equals("Nam") ? 0 : 1);
+                newNguoiDung.setId_vaitro(roleId);
+                newNguoiDung.setTrang_thai(trangThai);
+                newNguoiDung.setHinh_anh(hinhAnh); // Gán đường dẫn hình ảnh cho đối tượng newNguoiDung
+
+                // Gọi phương thức add trong NguoiDung_Service để thêm người dùng mới
+                boolean success = nvService.add(newNguoiDung);
+                if (success) {
+                    // Làm mới bảng để hiển thị dữ liệu mới
+                    listNV = nvService.getAll_KH();
+                    ShowData(listNV);
+                    JOptionPane.showMessageDialog(null, "Thêm mới người dùng thành công!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Thêm mới người dùng thất bại! Vui lòng thử lại.");
+                
+            }
+        }
+    }//GEN-LAST:event_btnThemActionPerformed
+    private boolean isValidEmail(String email) {
+        // Sử dụng biểu thức chính quy để kiểm tra định dạng email
+        String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        return email.matches(regex);
+    }
+
+// Phương thức kiểm tra định dạng ngày tháng
+    private boolean isValidDate(String date) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+            sdf.parse(date);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+    private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
+        int row = table.getSelectedRow();
+        if (row >= 0) {
+            String tenNV = table.getValueAt(row, 0).toString();
+            String gioiTinh = table.getValueAt(row, 1).toString();
+            String usename = table.getValueAt(row, 2).toString();
+            String password = table.getValueAt(row, 3).toString();
+            String vaiTro = table.getValueAt(row, 4).toString(); // Lấy thông tin vai trò
+            String trangThai = table.getValueAt(row, 5).toString();
+
+            JTextField txtTenNV = new JTextField(tenNV);
+            JTextField txtUsename = new JTextField(usename);
+            JTextField txtPassWord = new JTextField(password);
+            JRadioButton rdoNam = new JRadioButton("Nam");
+            JRadioButton rdoNu = new JRadioButton("Nữ");
+            JTextField txtID = new JTextField();
+            txtID.setText(table.getValueAt(row, 0).toString());
+
+            if (gioiTinh.equalsIgnoreCase("Nam")) {
+                rdoNam.setSelected(true);
+                rdoNu.setSelected(false);
+            } else {
+                rdoNam.setSelected(false);
+                rdoNu.setSelected(true);
+            }
+
+            cbxTrangThai.setSelectedItem(trangThai);
+
+            // Hiển thị vai trò trong combobox
+            switch (vaiTro) {
+                case "Quản lý":
+                    cbxTrangThai.setSelectedIndex(0);
+                    break;
+                case "Nhân viên bán hàng":
+                    cbxTrangThai.setSelectedIndex(1);
+                    break;
+                case "Kế toán":
+                    cbxTrangThai.setSelectedIndex(2);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tableMouseClicked
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        int selectedRow = table.getSelectedRow(); // Lấy chỉ số hàng đã chọn trong bảng
+        if (selectedRow == -1) {
+            // Nếu không có hàng nào được chọn, hiển thị thông báo và kết thúc phương thức
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn người dùng cần sửa.");
+            return;
+        }
+
+        // Hiển thị hộp thoại sửa thông tin người dùng
+        JTextField txtCccd = new JTextField();
+        JTextField txtTenNV = new JTextField();
+        JTextField txtUsername = new JTextField();
+        JPasswordField txtPassWord = new JPasswordField();
+        JTextField txtEmail = new JTextField();
+        JTextField txtNgayDangki = new JTextField();
+        JTextField txtSdt = new JTextField();
+        JTextField txtNgaySinh = new JTextField();
+        String[] gioiTinhOptions = {"Nam", "Nữ"};
+        JComboBox<String> cbxGioiTinh = new JComboBox<>(gioiTinhOptions);
+        String[] VaitroOptions = {"Quản lý", "Nhân viên bán hàng", "Kế toán"};
+        JComboBox<String> cbxVaiTro = new JComboBox<>(VaitroOptions);
+
+        JPanel panel = new JPanel(new GridLayout(0, 1));
+        panel.add(new JLabel("Cccd:"));
+        panel.add(txtCccd);
+        panel.add(new JLabel("Tên nhân viên:"));
+        panel.add(txtTenNV);
+        panel.add(new JLabel("Username:"));
+        panel.add(txtUsername);
+        panel.add(new JLabel("Password:"));
+        panel.add(txtPassWord);
+        panel.add(new JLabel("Giới tính:"));
+        panel.add(cbxGioiTinh);
+        panel.add(new JLabel("Vai trò:"));
+        panel.add(cbxVaiTro);
+
+        // Lấy thông tin người dùng từ hàng được chọn trong bảng
+        String cccd = table.getValueAt(selectedRow, 0).toString();
+        String tenNV = table.getValueAt(selectedRow, 1).toString();
+        String gioiTinh = table.getValueAt(selectedRow, 2).toString();
+        String username = table.getValueAt(selectedRow, 3).toString();
+        String password = table.getValueAt(selectedRow, 4).toString();
+        String vaiTro = table.getValueAt(selectedRow, 5).toString();
+        String trangThai = table.getValueAt(selectedRow, 6).toString();
+
+        // Hiển thị thông tin người dùng đã chọn trong hộp thoại sửa
+        txtCccd.setText(cccd);
+        txtTenNV.setText(tenNV);
+        txtUsername.setText(username);
+        txtPassWord.setText(password);
+        cbxGioiTinh.setSelectedItem(gioiTinh);
+        cbxVaiTro.setSelectedItem(vaiTro);
+
+        int result = JOptionPane.showConfirmDialog(null, panel, "Sửa thông tin người dùng",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            // Lấy thông tin mới từ các trường nhập vào trong hộp thoại
+            String newCccd = txtCccd.getText();
+            String newTenNV = txtTenNV.getText();
+            String newUsername = txtUsername.getText();
+            String newPassword = new String(txtPassWord.getPassword());
+            String newEmail = txtEmail.getText();
+            String newNgayDangKi = txtNgayDangki.getText();
+            String newSdt = txtSdt.getText();
+            String newNgaySinh = txtNgaySinh.getText();
+            String newGioiTinh = (String) cbxGioiTinh.getSelectedItem();
+            String newVaiTro = (String) cbxVaiTro.getSelectedItem();
+            // Thêm logic validation ở đây
+            // Ví dụ: Kiểm tra xem các trường thông tin đã nhập có hợp lệ không
+            if (newCccd.isEmpty() || newTenNV.isEmpty() || newUsername.isEmpty() || newPassword.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Vui lòng điền đầy đủ thông tin.");
+            } else {
+                // Tạo một đối tượng nguoiDung mới với các giá trị mới
+                nguoiDung updatedNguoiDung = new nguoiDung();
+                updatedNguoiDung.setCccd(newCccd);
+                updatedNguoiDung.setTen_nv(newTenNV);
+                updatedNguoiDung.setUsername(newUsername);
+                updatedNguoiDung.setPassword(newPassword);
+                updatedNguoiDung.setEmail(newEmail);
+                updatedNguoiDung.setNgay_dangki(newNgayDangKi);
+                updatedNguoiDung.setSdt(newSdt);
+                updatedNguoiDung.setNgay_sinh(newNgaySinh);
+                updatedNguoiDung.setGioi_tinh(newGioiTinh.equals("Nam") ? 0 : 1);
+                updatedNguoiDung.setId_vaitro(getRoleId(newVaiTro));
+                updatedNguoiDung.setTrang_thai(trangThai);
+
+                // Gọi phương thức update trong NguoiDung_Service để cập nhật thông tin người dùng
+                boolean success = nvService.updateNhanVien(updatedNguoiDung);
+                if (success) {
+                    // Nếu cập nhật thành công, cập nhật lại bảng hiển thị dữ liệu
+                    listNV = nvService.getAll_KH();
+                    ShowData(listNV);
+                    JOptionPane.showMessageDialog(null, "Sửa thông tin người dùng thành công!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Sửa thông tin người dùng thất bại! Vui lòng thử lại.");
+                }
+            }
+        }
+    }
+
+    private int getRoleId(String roleName) {
+        switch (roleName) {
+            case "Quản lý":
+                return 1;
+            case "Nhân viên bán hàng":
+                return 2;
+            case "Kế toán":
+                return 3;
+            default:
+                return -1; // Giá trị mặc định cho vai trò không hợp lệ
+        }
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        int selectedRow = table.getSelectedRow(); // Lấy chỉ số hàng đã chọn trong bảng
+        if (selectedRow == -1) {
+            // Nếu không có hàng nào được chọn, hiển thị thông báo và kết thúc phương thức
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn người dùng cần xóa.");
+            return;
+        }
+
+        // Hiển thị hộp thoại xác nhận xóa
+        int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa người dùng này?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Lấy giá trị của cột "cccd" trong hàng đã chọn
+            String cccdToDelete = table.getValueAt(selectedRow, 0).toString();
+
+            // Gọi phương thức xóa người dùng từ Service
+            boolean success = nvService.delete(cccdToDelete);
+            if (success) {
+                // Nếu xóa thành công, cập nhật lại bảng hiển thị dữ liệu
+                listNV = nvService.getAll_KH();
+                ShowData(listNV);
+                JOptionPane.showMessageDialog(null, "Đã xóa người dùng thành công.");
+            } else {
+                // Nếu xóa không thành công, hiển thị thông báo lỗi
+                JOptionPane.showMessageDialog(null, "Xóa người dùng không thành công. Vui lòng thử lại.");
+            }
+        }
+    }//GEN-LAST:event_btnXoaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btnSua;
+    private javax.swing.JTextField btnTK;
+    private javax.swing.JButton btnThem;
+    private javax.swing.JButton btnXoa;
+    private javax.swing.JComboBox<String> cbxTrangThai;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     private com.raven.swing.PanelBorder panelBorder1;
     private javax.swing.JScrollPane spTable;
     private com.raven.swing.Table table;
