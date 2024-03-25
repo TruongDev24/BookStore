@@ -20,10 +20,17 @@ public class DBConnect {
     private static final String paas = "sa";
     
     public static Connection getConnection(){
+<<<<<<< HEAD
         String url = "jdbc:sqlserver://" + server + ":" + port + ";databaseName=" + db + ";encrypt=true;trustServerCertificate=true;";
         try {
             return DriverManager.getConnection(url, user, paas);
         } catch (SQLException e) {
+=======
+        String url = "jdbc:sqlserver://localhost\\TRUONGLEVAN:1433;databaseName=BookStore;encryt=true;trustserverCertificate=true;";
+        try{
+            return DriverManager.getConnection(url, user, pass);
+        }catch(SQLException e){
+>>>>>>> origin
             e.printStackTrace();
         }
         return null;
