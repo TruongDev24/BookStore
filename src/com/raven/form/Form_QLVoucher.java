@@ -5,17 +5,30 @@
  */
 package com.raven.form;
 
+import com.raven.Service.Service_Voucher;
+import com.raven.Model2.VCmodel;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author RAVEN
  */
-public class Form_QLHoaDon extends javax.swing.JPanel {
+public class Form_QLVoucher extends javax.swing.JPanel {
 
+    private DefaultTableModel dtm;
+    private List<VCmodel> list = new ArrayList<>();
+    private Service_Voucher sv = new Service_Voucher();
     /**
      * Creates new form Form_1
      */
-    public Form_QLHoaDon() {
+    public Form_QLVoucher() {
         initComponents();
+        dtm = (DefaultTableModel) tbVC.getModel();
+        list = sv.getAll();
+        showData(list);
+//        tbVC.addRow(new Object[]{"g", "g", "h", "u", "u", "o"});
     }
 
     /**
@@ -27,24 +40,58 @@ public class Form_QLHoaDon extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        spTable = new javax.swing.JScrollPane();
-        table = new com.raven.swing.Table();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        ThemBtn = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
         jTextField1 = new javax.swing.JTextField();
         panelBorder1 = new com.raven.swing.PanelBorder();
         jLabel2 = new javax.swing.JLabel();
+        spTable = new javax.swing.JScrollPane();
+        tbVC = new com.raven.swing.Table();
         jLabel1 = new javax.swing.JLabel();
+
+        setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+
+        jButton1.setBackground(new java.awt.Color(18, 64, 118));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(249, 232, 151));
+        jButton1.setText("Xóa");
+
+        jButton2.setBackground(new java.awt.Color(18, 64, 118));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(249, 232, 151));
+        jButton2.setText("Sửa");
+
+        ThemBtn.setBackground(new java.awt.Color(18, 64, 118));
+        ThemBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ThemBtn.setForeground(new java.awt.Color(249, 232, 151));
+        ThemBtn.setText("Thêm mới");
+        ThemBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ThemBtnActionPerformed(evt);
+            }
+        });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jTextField1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+
+        panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel2.setText("Quản lí mã giảm giá");
 
         spTable.setBorder(null);
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
+        tbVC.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mã đơn hàng", "Tên khách", "Nhân viên", "Tiền giảm", "Tổng tiền", "Ngày tạo"
+                "Mã", "Tên voucher", "Ngày bắt đầu", "Ngày kết thúc", "Số tiền giảm", "Trạng thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -55,24 +102,7 @@ public class Form_QLHoaDon extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        table.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        table.getTableHeader().setReorderingAllowed(false);
-        spTable.setViewportView(table);
-
-        jButton1.setBackground(new java.awt.Color(18, 64, 118));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(249, 232, 151));
-        jButton1.setText("Xóa");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jTextField1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-
-        panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel2.setText("Quản lí hóa đơn");
+        spTable.setViewportView(tbVC);
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
         panelBorder1.setLayout(panelBorder1Layout);
@@ -80,15 +110,19 @@ public class Form_QLHoaDon extends javax.swing.JPanel {
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel2)
-                .addContainerGap(760, Short.MAX_VALUE))
+                .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(spTable, javax.swing.GroupLayout.PREFERRED_SIZE, 877, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel2)
-                .addContainerGap(479, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/search.png"))); // NOI18N
@@ -104,7 +138,11 @@ public class Form_QLHoaDon extends javax.swing.JPanel {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 241, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addComponent(ThemBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addGap(27, 27, 27))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,7 +163,9 @@ public class Form_QLHoaDon extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))))
+                            .addComponent(jButton1)
+                            .addComponent(jButton2)
+                            .addComponent(ThemBtn))))
                 .addContainerGap(558, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -146,9 +186,23 @@ public class Form_QLHoaDon extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void showData(List<VCmodel> listVC) {
+        dtm.setRowCount(0);
+        listVC.forEach(c -> dtm.addRow(new Object[]{
+            c.getMa(), c.getTen(), c.getNgay_bd(),c.getNgay_kt(), c.getTien_giam(), c.getStatus()
+        }));
+    }
+    private void ThemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ThemBtnActionPerformed
+        // TODO add your handling code here:
+        ChiTietVoucher ct = new ChiTietVoucher(null, true);
+        ct.setVisible(true);
+    }//GEN-LAST:event_ThemBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ThemBtn;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -156,6 +210,6 @@ public class Form_QLHoaDon extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField1;
     private com.raven.swing.PanelBorder panelBorder1;
     private javax.swing.JScrollPane spTable;
-    private com.raven.swing.Table table;
+    private com.raven.swing.Table tbVC;
     // End of variables declaration//GEN-END:variables
 }
