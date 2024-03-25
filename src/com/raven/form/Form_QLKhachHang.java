@@ -236,89 +236,88 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // Tạo một dialog để nhập dữ liệu mới
-        JDialog dialog = new JDialog();
-        dialog.setTitle("Thêm mới khách hàng");
+    JDialog dialog = new JDialog();
+    dialog.setTitle("Thêm mới khách hàng");
 
-        // Tạo các trường dữ liệu
-        JTextField txtTenKH = new JTextField();
-        JTextField txtSDT = new JTextField();
-        JTextField txtNgayThem = new JTextField();
-        JRadioButton rdoNam = new JRadioButton("Nam");
-        JRadioButton rdoNu = new JRadioButton("Nữ");
-        JComboBox<String> cbxTrangThai = new JComboBox<>(new String[]{"Active", "Inactive"});
-        JTextField txtID = new JTextField();
-        JButton btnSubmit = new JButton("Submit");
+    // Tạo các trường dữ liệu
+    JTextField txtTenKH = new JTextField();
+    JTextField txtSDT = new JTextField();
+    JTextField txtNgayThem = new JTextField();
+    JRadioButton rdoNam = new JRadioButton("Nam");
+    JRadioButton rdoNu = new JRadioButton("Nữ");
+    JComboBox<String> cbxTrangThai = new JComboBox<>(new String[]{"Active", "Inactive"});
+    JTextField txtID = new JTextField();
+    JButton btnSubmit = new JButton("Submit");
 
-        // Thiết lập layout cho dialog
-        dialog.setLayout(new GridLayout(7, 2));
+    // Thiết lập layout cho dialog
+    dialog.setLayout(new GridLayout(7, 2));
 
-        // Thêm các trường dữ liệu và nút vào dialog
-        dialog.add(new JLabel("Tên khách hàng:"));
-        dialog.add(txtTenKH);
-        dialog.add(new JLabel("Số điện thoại:"));
-        dialog.add(txtSDT);
-        dialog.add(new JLabel("Ngày thêm:"));
-        dialog.add(txtNgayThem);
-        dialog.add(new JLabel("Giới tính:"));
-        ButtonGroup group = new ButtonGroup();
-        group.add(rdoNam);
-        group.add(rdoNu);
-        JPanel panelGioiTinh = new JPanel();
-        panelGioiTinh.add(rdoNam);
-        panelGioiTinh.add(rdoNu);
-        dialog.add(panelGioiTinh);
-        dialog.add(new JLabel("Trạng thái:"));
-        dialog.add(cbxTrangThai);
-        dialog.add(btnSubmit);
+    // Thêm các trường dữ liệu và nút vào dialog
+    dialog.add(new JLabel("Tên khách hàng:"));
+    dialog.add(txtTenKH);
+    dialog.add(new JLabel("Số điện thoại:"));
+    dialog.add(txtSDT);
+    dialog.add(new JLabel("Ngày thêm:"));
+    dialog.add(txtNgayThem);
+    dialog.add(new JLabel("Giới tính:"));
+    ButtonGroup group = new ButtonGroup();
+    group.add(rdoNam);
+    group.add(rdoNu);
+    JPanel panelGioiTinh = new JPanel();
+    panelGioiTinh.add(rdoNam);
+    panelGioiTinh.add(rdoNu);
+    dialog.add(panelGioiTinh);
+    dialog.add(new JLabel("Trạng thái:"));
+    dialog.add(cbxTrangThai);
+    dialog.add(btnSubmit);
 
-        // Xử lý sự kiện khi nút "Submit" được nhấn
-        btnSubmit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lấy thông tin từ các trường dữ liệu
-                String id = txtID.getText().trim();
-                String tenKH = txtTenKH.getText().trim();
-                String sdt = txtSDT.getText().trim();
-                String ngayThem = txtNgayThem.getText().trim();
-                int gioiTinh = rdoNam.isSelected() ? 0 : 1;
-                String trangThai = cbxTrangThai.getSelectedItem().toString();
+    // Xử lý sự kiện khi nút "Submit" được nhấn
+    btnSubmit.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Lấy thông tin từ các trường dữ liệu
+            String tenKH = txtTenKH.getText().trim();
+            String sdt = txtSDT.getText().trim();
+            String ngayThem = txtNgayThem.getText().trim();
+            int gioiTinh = rdoNam.isSelected() ? 0 : 1;
+            String trangThai = cbxTrangThai.getSelectedItem().toString();
 
-                // Kiểm tra tính hợp lệ của dữ liệu
-                if (tenKH.isEmpty() || sdt.isEmpty() || ngayThem.isEmpty()) {
-                    JOptionPane.showMessageDialog(dialog, "Vui lòng nhập đầy đủ thông tin.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                if (!sdt.matches("\\d{10}")) {
-                    JOptionPane.showMessageDialog(dialog, "Số điện thoại không hợp lệ. Vui lòng nhập lại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                // Kiểm tra ngày thêm có đúng định dạng không (ví dụ: dd/MM/yyyy)
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-                dateFormat.setLenient(false);
-                try {
-                    dateFormat.parse(ngayThem);
-                } catch (ParseException ex) {
-                    JOptionPane.showMessageDialog(dialog, "Ngày thêm không hợp lệ. Vui lòng nhập lại theo định dạng yyyy-mm-dd.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                // Tạo đối tượng khách hàng mới
-                khachHang khachHangMoi = new khachHang(id, tenKH, sdt, ngayThem, gioiTinh, trangThai);
-
-                // Thêm khách hàng mới vào danh sách và cập nhật bảng
-                nvService.add(khachHangMoi);
-                listKH.add(khachHangMoi);
-
-                // Đóng dialog sau khi thêm thành công
-                dialog.dispose();
-                ShowData(listKH);
+            // Kiểm tra tính hợp lệ của dữ liệu
+            if (tenKH.isEmpty() || sdt.isEmpty() || ngayThem.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "Vui lòng nhập đầy đủ thông tin.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        });
+            if (!sdt.matches("\\d{10}")) {
+                JOptionPane.showMessageDialog(dialog, "Số điện thoại không hợp lệ. Vui lòng nhập lại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // Kiểm tra ngày thêm có đúng định dạng không (ví dụ: yyyy-mm-dd)
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            dateFormat.setLenient(false);
+            try {
+                dateFormat.parse(ngayThem);
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(dialog, "Ngày thêm không hợp lệ. Vui lòng nhập lại theo định dạng yyyy-MM-dd.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-        // Thiết lập kích thước và hiển thị dialog
-        dialog.setSize(300, 250);
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
+            // Tạo đối tượng khách hàng mới
+            khachHang khachHangMoi = new khachHang(null, tenKH, sdt, ngayThem, gioiTinh, trangThai);
+
+            // Thêm khách hàng mới vào danh sách và cập nhật bảng
+            nvService.add(khachHangMoi);
+            listKH.add(khachHangMoi);
+
+            // Đóng dialog sau khi thêm thành công
+            dialog.dispose();
+            ShowData(listKH);
+        }
+    });
+
+    // Thiết lập kích thước và hiển thị dialog
+    dialog.setSize(300, 250);
+    dialog.setLocationRelativeTo(null);
+    dialog.setVisible(true);
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
@@ -342,7 +341,6 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
         txtSDT.setText(table.getValueAt(i, 3).toString());
         txtNgayThem.setText(table.getValueAt(i, 4).toString());
         String trangThai = table.getValueAt(i, 5).toString();
-        
     }//GEN-LAST:event_tableMouseClicked
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed

@@ -392,7 +392,7 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
 // Phương thức kiểm tra định dạng ngày tháng
     private boolean isValidDate(String date) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
             sdf.setLenient(false);
             sdf.parse(date);
             return true;
