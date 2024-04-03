@@ -97,4 +97,26 @@ public class khachHang_Service {
         }
         return check > 0;
     }
+    public List<khachHang> timKiemKhachHang(String keyword) {
+    String sql = "SELECT * FROM KhachHang WHERE ten_khach LIKE ? OR sdt LIKE ?";
+    List<khachHang> resultList = new ArrayList<>();
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, "%" + keyword + "%");
+        ps.setString(2, "%" + keyword + "%");
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            khachHang kh = new khachHang(
+                    rs.getString("id"),
+                    rs.getString("ten_khach"),
+                    rs.getString("sdt"),
+                    rs.getString("ngay_them"),
+                    rs.getInt("gioi_tinh"),
+                    rs.getString("trang_thai"));
+            resultList.add(kh);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return resultList;
+}
 }

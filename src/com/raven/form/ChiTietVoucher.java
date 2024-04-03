@@ -169,7 +169,6 @@ public class ChiTietVoucher extends javax.swing.JDialog {
 
     private void luuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuBtnActionPerformed
         // TODO add your handling code here:
-        String id = 
     }//GEN-LAST:event_luuBtnActionPerformed
 
     /**

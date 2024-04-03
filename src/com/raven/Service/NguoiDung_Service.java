@@ -98,4 +98,33 @@ public class NguoiDung_Service {
         }
         return false;
     }
+    public List<nguoiDung> searchByKeyword(String keyword) {
+        String sql = "SELECT * FROM NhanVien WHERE ten_nv LIKE ? OR cccd LIKE ?";
+        List<nguoiDung> resultList = new ArrayList<>();
+        try (PreparedStatement prs = con.prepareStatement(sql)) {
+            prs.setString(1, "%" + keyword + "%");
+            prs.setString(2, "%" + keyword + "%");
+            ResultSet rs = prs.executeQuery();
+            while (rs.next()) {
+                nguoiDung nd = new nguoiDung(
+                        rs.getString("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getInt(9),
+                        rs.getString(10),
+                        rs.getString(11),
+                        rs.getInt(12),
+                        rs.getString(13));
+                resultList.add(nd);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultList;
+    }
 }

@@ -19,6 +19,8 @@ import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -92,8 +94,8 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
         btnXoa = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
         btnThem = new javax.swing.JButton();
-        cbxTrangThai = new javax.swing.JComboBox<>();
-        btnTK = new javax.swing.JTextField();
+        cbxLoc = new javax.swing.JComboBox<>();
+        txtTimKiem = new javax.swing.JTextField();
         panelBorder1 = new com.raven.swing.PanelBorder();
         jLabel2 = new javax.swing.JLabel();
         spTable = new javax.swing.JScrollPane();
@@ -132,9 +134,19 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
             }
         });
 
-        cbxTrangThai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive", " " }));
+        cbxLoc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên người dùng từ A-Z", "Username từ A-Z" }));
+        cbxLoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxLocActionPerformed(evt);
+            }
+        });
 
-        btnTK.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtTimKiem.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyReleased(evt);
+            }
+        });
 
         panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -200,9 +212,9 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
                 .addGap(31, 31, 31)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTK, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
-                .addComponent(cbxTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbxLoc, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addComponent(btnThem)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -226,8 +238,8 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbxTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxLoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnXoa)
                             .addComponent(btnSua)
                             .addComponent(btnThem))))
@@ -338,7 +350,7 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
             String password = new String(txtPassWord.getPassword());
             String gioiTinh = (String) cbxGioiTinh.getSelectedItem();
             String vaiTro = (String) cbxvaiTro.getSelectedItem();
-            String trangThai = (String) cbxTrangThai.getSelectedItem();
+            String trangThai = (String) cbxLoc.getSelectedItem();
             String hinhAnh = lblHinhAnh.getText(); // Lấy đường dẫn hình ảnh từ JLabel
 
             int roleId = -1; // Giá trị mặc định cho vai trò không hợp lệ
@@ -355,31 +367,31 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
                 default:
                     break;
             }
-                // Tạo một đối tượng nguoiDung mới với các giá trị đã nhập
-                nguoiDung newNguoiDung = new nguoiDung();
-                newNguoiDung.setCccd(cccd);
-                newNguoiDung.setTen_nv(tenNV);
-                newNguoiDung.setUsername(username);
-                newNguoiDung.setPassword(password);
-                newNguoiDung.setEmail(email);
-                newNguoiDung.setNgay_dangki(ngayDangKi);
-                newNguoiDung.setSdt(sdt);
-                newNguoiDung.setNgay_sinh(ngaySinh);
-                newNguoiDung.setGioi_tinh(gioiTinh.equals("Nam") ? 0 : 1);
-                newNguoiDung.setId_vaitro(roleId);
-                newNguoiDung.setTrang_thai(trangThai);
-                newNguoiDung.setHinh_anh(hinhAnh); // Gán đường dẫn hình ảnh cho đối tượng newNguoiDung
+            // Tạo một đối tượng nguoiDung mới với các giá trị đã nhập
+            nguoiDung newNguoiDung = new nguoiDung();
+            newNguoiDung.setCccd(cccd);
+            newNguoiDung.setTen_nv(tenNV);
+            newNguoiDung.setUsername(username);
+            newNguoiDung.setPassword(password);
+            newNguoiDung.setEmail(email);
+            newNguoiDung.setNgay_dangki(ngayDangKi);
+            newNguoiDung.setSdt(sdt);
+            newNguoiDung.setNgay_sinh(ngaySinh);
+            newNguoiDung.setGioi_tinh(gioiTinh.equals("Nam") ? 0 : 1);
+            newNguoiDung.setId_vaitro(roleId);
+            newNguoiDung.setTrang_thai(trangThai);
+            newNguoiDung.setHinh_anh(hinhAnh); // Gán đường dẫn hình ảnh cho đối tượng newNguoiDung
 
-                // Gọi phương thức add trong NguoiDung_Service để thêm người dùng mới
-                boolean success = nvService.add(newNguoiDung);
-                if (success) {
-                    // Làm mới bảng để hiển thị dữ liệu mới
-                    listNV = nvService.getAll_KH();
-                    ShowData(listNV);
-                    JOptionPane.showMessageDialog(null, "Thêm mới người dùng thành công!");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Thêm mới người dùng thất bại! Vui lòng thử lại.");
-                
+            // Gọi phương thức add trong NguoiDung_Service để thêm người dùng mới
+            boolean success = nvService.add(newNguoiDung);
+            if (success) {
+                // Làm mới bảng để hiển thị dữ liệu mới
+                listNV = nvService.getAll_KH();
+                ShowData(listNV);
+                JOptionPane.showMessageDialog(null, "Thêm mới người dùng thành công!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Thêm mới người dùng thất bại! Vui lòng thử lại.");
+
             }
         }
     }//GEN-LAST:event_btnThemActionPerformed
@@ -426,18 +438,18 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
                 rdoNu.setSelected(true);
             }
 
-            cbxTrangThai.setSelectedItem(trangThai);
+            cbxLoc.setSelectedItem(trangThai);
 
             // Hiển thị vai trò trong combobox
             switch (vaiTro) {
                 case "Quản lý":
-                    cbxTrangThai.setSelectedIndex(0);
+                    cbxLoc.setSelectedIndex(0);
                     break;
                 case "Nhân viên bán hàng":
-                    cbxTrangThai.setSelectedIndex(1);
+                    cbxLoc.setSelectedIndex(1);
                     break;
                 case "Kế toán":
-                    cbxTrangThai.setSelectedIndex(2);
+                    cbxLoc.setSelectedIndex(2);
                     break;
                 default:
                     break;
@@ -585,19 +597,48 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnXoaActionPerformed
+    
+    private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
+        filterAndSearch();
+    }//GEN-LAST:event_txtTimKiemKeyReleased
 
+    private void cbxLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxLocActionPerformed
+        filterAndSearch();
+    }//GEN-LAST:event_cbxLocActionPerformed
+    private void filterAndSearch() {
+        String selectedFilter = cbxLoc.getSelectedItem().toString();
+        String keyword = txtTimKiem.getText().trim();
+
+        List<nguoiDung> filteredAndSearchedData = listNV;
+
+        // Lọc
+        switch (selectedFilter) {
+            case "Username từ A-Z":
+                Collections.sort(filteredAndSearchedData, Comparator.comparing(nguoiDung::getUsername));
+                break;
+            case "Tên người dùng từ A-Z":
+                Collections.sort(filteredAndSearchedData, Comparator.comparing(nguoiDung::getTen_nv));
+                break;
+            default:
+                break;
+        }
+        if (!keyword.isEmpty()) {
+            filteredAndSearchedData = nvService.searchByKeyword(keyword);
+        }
+        ShowData(filteredAndSearchedData);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSua;
-    private javax.swing.JTextField btnTK;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
-    private javax.swing.JComboBox<String> cbxTrangThai;
+    private javax.swing.JComboBox<String> cbxLoc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private com.raven.swing.PanelBorder panelBorder1;
     private javax.swing.JScrollPane spTable;
     private com.raven.swing.Table table;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 }

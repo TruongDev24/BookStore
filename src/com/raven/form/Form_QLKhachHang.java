@@ -16,6 +16,8 @@ import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -116,9 +118,19 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
             }
         });
 
-        cbxLoc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
+        cbxLoc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày thêm từ mới nhất", "Ngày thêm từ cũ nhất", "Tên khách hàng từ A-Z" }));
+        cbxLoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxLocActionPerformed(evt);
+            }
+        });
 
         txtTimKiem.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyReleased(evt);
+            }
+        });
 
         panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -236,88 +248,88 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // Tạo một dialog để nhập dữ liệu mới
-    JDialog dialog = new JDialog();
-    dialog.setTitle("Thêm mới khách hàng");
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Thêm mới khách hàng");
 
-    // Tạo các trường dữ liệu
-    JTextField txtTenKH = new JTextField();
-    JTextField txtSDT = new JTextField();
-    JTextField txtNgayThem = new JTextField();
-    JRadioButton rdoNam = new JRadioButton("Nam");
-    JRadioButton rdoNu = new JRadioButton("Nữ");
-    JComboBox<String> cbxTrangThai = new JComboBox<>(new String[]{"Active", "Inactive"});
-    JTextField txtID = new JTextField();
-    JButton btnSubmit = new JButton("Submit");
+        // Tạo các trường dữ liệu
+        JTextField txtTenKH = new JTextField();
+        JTextField txtSDT = new JTextField();
+        JTextField txtNgayThem = new JTextField();
+        JRadioButton rdoNam = new JRadioButton("Nam");
+        JRadioButton rdoNu = new JRadioButton("Nữ");
+        JComboBox<String> cbxTrangThai = new JComboBox<>(new String[]{"Active", "Inactive"});
+        JTextField txtID = new JTextField();
+        JButton btnSubmit = new JButton("Submit");
 
-    // Thiết lập layout cho dialog
-    dialog.setLayout(new GridLayout(7, 2));
+        // Thiết lập layout cho dialog
+        dialog.setLayout(new GridLayout(7, 2));
 
-    // Thêm các trường dữ liệu và nút vào dialog
-    dialog.add(new JLabel("Tên khách hàng:"));
-    dialog.add(txtTenKH);
-    dialog.add(new JLabel("Số điện thoại:"));
-    dialog.add(txtSDT);
-    dialog.add(new JLabel("Ngày thêm:"));
-    dialog.add(txtNgayThem);
-    dialog.add(new JLabel("Giới tính:"));
-    ButtonGroup group = new ButtonGroup();
-    group.add(rdoNam);
-    group.add(rdoNu);
-    JPanel panelGioiTinh = new JPanel();
-    panelGioiTinh.add(rdoNam);
-    panelGioiTinh.add(rdoNu);
-    dialog.add(panelGioiTinh);
-    dialog.add(new JLabel("Trạng thái:"));
-    dialog.add(cbxTrangThai);
-    dialog.add(btnSubmit);
+        // Thêm các trường dữ liệu và nút vào dialog
+        dialog.add(new JLabel("Tên khách hàng:"));
+        dialog.add(txtTenKH);
+        dialog.add(new JLabel("Số điện thoại:"));
+        dialog.add(txtSDT);
+        dialog.add(new JLabel("Ngày thêm:"));
+        dialog.add(txtNgayThem);
+        dialog.add(new JLabel("Giới tính:"));
+        ButtonGroup group = new ButtonGroup();
+        group.add(rdoNam);
+        group.add(rdoNu);
+        JPanel panelGioiTinh = new JPanel();
+        panelGioiTinh.add(rdoNam);
+        panelGioiTinh.add(rdoNu);
+        dialog.add(panelGioiTinh);
+        dialog.add(new JLabel("Trạng thái:"));
+        dialog.add(cbxTrangThai);
+        dialog.add(btnSubmit);
 
-    // Xử lý sự kiện khi nút "Submit" được nhấn
-    btnSubmit.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // Lấy thông tin từ các trường dữ liệu
-            String tenKH = txtTenKH.getText().trim();
-            String sdt = txtSDT.getText().trim();
-            String ngayThem = txtNgayThem.getText().trim();
-            int gioiTinh = rdoNam.isSelected() ? 0 : 1;
-            String trangThai = cbxTrangThai.getSelectedItem().toString();
+        // Xử lý sự kiện khi nút "Submit" được nhấn
+        btnSubmit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Lấy thông tin từ các trường dữ liệu
+                String tenKH = txtTenKH.getText().trim();
+                String sdt = txtSDT.getText().trim();
+                String ngayThem = txtNgayThem.getText().trim();
+                int gioiTinh = rdoNam.isSelected() ? 0 : 1;
+                String trangThai = cbxTrangThai.getSelectedItem().toString();
 
-            // Kiểm tra tính hợp lệ của dữ liệu
-            if (tenKH.isEmpty() || sdt.isEmpty() || ngayThem.isEmpty()) {
-                JOptionPane.showMessageDialog(dialog, "Vui lòng nhập đầy đủ thông tin.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
+                // Kiểm tra tính hợp lệ của dữ liệu
+                if (tenKH.isEmpty() || sdt.isEmpty() || ngayThem.isEmpty()) {
+                    JOptionPane.showMessageDialog(dialog, "Vui lòng nhập đầy đủ thông tin.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (!sdt.matches("\\d{10}")) {
+                    JOptionPane.showMessageDialog(dialog, "Số điện thoại không hợp lệ. Vui lòng nhập lại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                // Kiểm tra ngày thêm có đúng định dạng không (ví dụ: yyyy-mm-dd)
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                dateFormat.setLenient(false);
+                try {
+                    dateFormat.parse(ngayThem);
+                } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(dialog, "Ngày thêm không hợp lệ. Vui lòng nhập lại theo định dạng yyyy-MM-dd.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Tạo đối tượng khách hàng mới
+                khachHang khachHangMoi = new khachHang(null, tenKH, sdt, ngayThem, gioiTinh, trangThai);
+
+                // Thêm khách hàng mới vào danh sách và cập nhật bảng
+                nvService.add(khachHangMoi);
+                listKH.add(khachHangMoi);
+
+                // Đóng dialog sau khi thêm thành công
+                dialog.dispose();
+                ShowData(listKH);
             }
-            if (!sdt.matches("\\d{10}")) {
-                JOptionPane.showMessageDialog(dialog, "Số điện thoại không hợp lệ. Vui lòng nhập lại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            // Kiểm tra ngày thêm có đúng định dạng không (ví dụ: yyyy-mm-dd)
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            dateFormat.setLenient(false);
-            try {
-                dateFormat.parse(ngayThem);
-            } catch (ParseException ex) {
-                JOptionPane.showMessageDialog(dialog, "Ngày thêm không hợp lệ. Vui lòng nhập lại theo định dạng yyyy-MM-dd.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+        });
 
-            // Tạo đối tượng khách hàng mới
-            khachHang khachHangMoi = new khachHang(null, tenKH, sdt, ngayThem, gioiTinh, trangThai);
-
-            // Thêm khách hàng mới vào danh sách và cập nhật bảng
-            nvService.add(khachHangMoi);
-            listKH.add(khachHangMoi);
-
-            // Đóng dialog sau khi thêm thành công
-            dialog.dispose();
-            ShowData(listKH);
-        }
-    });
-
-    // Thiết lập kích thước và hiển thị dialog
-    dialog.setSize(300, 250);
-    dialog.setLocationRelativeTo(null);
-    dialog.setVisible(true);
+        // Thiết lập kích thước và hiển thị dialog
+        dialog.setSize(300, 250);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
@@ -479,7 +491,40 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnXoaActionPerformed
 
+    private void cbxLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxLocActionPerformed
+        filterAndSearch();
+    }//GEN-LAST:event_cbxLocActionPerformed
 
+    private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
+        filterAndSearch();
+    }//GEN-LAST:event_txtTimKiemKeyReleased
+    private void filterAndSearch() {
+        String selectedFilter = cbxLoc.getSelectedItem().toString();
+        String keyword = txtTimKiem.getText().trim();
+
+        List<khachHang> filteredAndSearchedData = listKH;
+
+        // Lọc
+        switch (selectedFilter) {
+            case "Ngày thêm từ mới nhất":
+                Collections.sort(filteredAndSearchedData, Comparator.comparing(khachHang::getNgay_them).reversed());
+                break;
+            case "Ngày thêm từ cũ nhất":
+                Collections.sort(filteredAndSearchedData, Comparator.comparing(khachHang::getNgay_them));
+                break;
+            case "Tên khách hàng từ A-Z":
+                Collections.sort(filteredAndSearchedData, Comparator.comparing(khachHang::getTen_khach));
+                break;
+            default:
+                // Không làm gì nếu không có lựa chọn phù hợp
+                break;
+        }
+        if (!keyword.isEmpty()) {
+            filteredAndSearchedData = nvService.timKiemKhachHang(keyword);
+        }
+        ShowData(filteredAndSearchedData);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
