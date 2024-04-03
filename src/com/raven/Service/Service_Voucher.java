@@ -33,7 +33,7 @@ public class Service_Voucher {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 VCmodel vcm = new VCmodel(
-                        rs.getString(1),
+                        rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(4),
@@ -55,7 +55,7 @@ public class Service_Voucher {
             ps.setObject(2, voucher.getNgay_bd());
             ps.setObject(3, voucher.getNgay_kt());
             ps.setObject(4, voucher.getTien_giam());
-            ps.setObject(5, "N'Chưa bắt đầu'");
+            ps.setObject(5, "Chưa bắt đầu");
 
             ps.executeUpdate();
             return true;
@@ -66,11 +66,27 @@ public class Service_Voucher {
     }
     
     public boolean update(VCmodel voucher) {
-        String sql = "update Voucher set ten_vc = ?, tien_giam = ? where id = ?";
+        String sql = "update Voucher set ten_vc = ?, ngay_batdau = ?, ngay_ketThuc = ?, tien_giam = ? where id = ?";
         try ( PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, voucher.getTen());
-            ps.setObject(2, voucher.getTien_giam());
-            ps.setObject(3, voucher.getMa());
+            ps.setObject(2, voucher.getNgay_bd());
+            ps.setObject(3, voucher.getNgay_kt());
+            ps.setObject(4, voucher.getTien_giam());
+            ps.setInt(5, voucher.getMa());
+            
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean delete(VCmodel voucher) {
+        String sql = "update Voucher set trang_thai = ? where id = ?";
+        try ( PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setObject(1, "Đã xóa");
+            ps.setInt(2, voucher.getMa());
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {

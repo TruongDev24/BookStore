@@ -15,11 +15,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author RAVEN
  */
-public class Form_QLVoucher extends javax.swing.JPanel {
+public final class Form_QLVoucher extends javax.swing.JPanel {
 
     private DefaultTableModel dtm;
     private List<VCmodel> list = new ArrayList<>();
     private Service_Voucher sv = new Service_Voucher();
+
     /**
      * Creates new form Form_1
      */
@@ -28,7 +29,6 @@ public class Form_QLVoucher extends javax.swing.JPanel {
         dtm = (DefaultTableModel) tbVC.getModel();
         list = sv.getAll();
         showData(list);
-//        tbVC.addRow(new Object[]{"g", "g", "h", "u", "u", "o"});
     }
 
     /**
@@ -41,8 +41,8 @@ public class Form_QLVoucher extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        xoaBtn = new javax.swing.JButton();
+        suaBtn = new javax.swing.JButton();
         ThemBtn = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
         jTextField1 = new javax.swing.JTextField();
@@ -54,15 +54,25 @@ public class Form_QLVoucher extends javax.swing.JPanel {
 
         setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
 
-        jButton1.setBackground(new java.awt.Color(18, 64, 118));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(249, 232, 151));
-        jButton1.setText("Xóa");
+        xoaBtn.setBackground(new java.awt.Color(18, 64, 118));
+        xoaBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        xoaBtn.setForeground(new java.awt.Color(249, 232, 151));
+        xoaBtn.setText("Xóa");
+        xoaBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xoaBtnActionPerformed(evt);
+            }
+        });
 
-        jButton2.setBackground(new java.awt.Color(18, 64, 118));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(249, 232, 151));
-        jButton2.setText("Sửa");
+        suaBtn.setBackground(new java.awt.Color(18, 64, 118));
+        suaBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        suaBtn.setForeground(new java.awt.Color(249, 232, 151));
+        suaBtn.setText("Sửa");
+        suaBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                suaBtnActionPerformed(evt);
+            }
+        });
 
         ThemBtn.setBackground(new java.awt.Color(18, 64, 118));
         ThemBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -100,6 +110,11 @@ public class Form_QLVoucher extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tbVC.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbVCMouseClicked(evt);
             }
         });
         spTable.setViewportView(tbVC);
@@ -141,9 +156,9 @@ public class Form_QLVoucher extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addComponent(ThemBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(suaBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(xoaBtn)
                 .addGap(27, 27, 27))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -163,8 +178,8 @@ public class Form_QLVoucher extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)
+                            .addComponent(xoaBtn)
+                            .addComponent(suaBtn)
                             .addComponent(ThemBtn))))
                 .addContainerGap(558, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,23 +201,53 @@ public class Form_QLVoucher extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void showData(List<VCmodel> listVC) {
+    public void showData(List<VCmodel> listVC) {
         dtm.setRowCount(0);
         listVC.forEach(c -> dtm.addRow(new Object[]{
-            c.getMa(), c.getTen(), c.getNgay_bd(),c.getNgay_kt(), c.getTien_giam(), c.getStatus()
+            c.getMa(), c.getTen(), c.getNgay_bd(), c.getNgay_kt(), c.getTien_giam(), c.getStatus()
         }));
     }
     private void ThemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ThemBtnActionPerformed
         // TODO add your handling code here:
-        ChiTietVoucher ct = new ChiTietVoucher(null, true);
+        ChiTietVoucher ct = new ChiTietVoucher(null, true, ChiTietVoucher.ActionType.ADD);
         ct.setVisible(true);
+        list = sv.getAll();
+        showData(list);
     }//GEN-LAST:event_ThemBtnActionPerformed
 
+    private void tbVCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbVCMouseClicked
+
+    }//GEN-LAST:event_tbVCMouseClicked
+
+    private void suaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suaBtnActionPerformed
+        // TODO add your handling code here:
+        int row = tbVC.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
+        ChiTietVoucher ct = new ChiTietVoucher(null, true, ChiTietVoucher.ActionType.EDIT);
+        ct.detail(row);
+        ct.setVisible(true);
+        list = sv.getAll();
+        showData(list);
+    }//GEN-LAST:event_suaBtnActionPerformed
+
+    private void xoaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xoaBtnActionPerformed
+        // TODO add your handling code here:
+        int row = tbVC.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
+        ChiTietVoucher ct = new ChiTietVoucher(null, true, ChiTietVoucher.ActionType.EDIT);
+        ct.detail(row);
+        ct.delete();
+        list = sv.getAll();
+        showData(list);
+    }//GEN-LAST:event_xoaBtnActionPerformed
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ThemBtn;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -210,6 +255,8 @@ public class Form_QLVoucher extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField1;
     private com.raven.swing.PanelBorder panelBorder1;
     private javax.swing.JScrollPane spTable;
+    private javax.swing.JButton suaBtn;
     private com.raven.swing.Table tbVC;
+    private javax.swing.JButton xoaBtn;
     // End of variables declaration//GEN-END:variables
 }

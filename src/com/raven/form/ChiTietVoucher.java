@@ -4,19 +4,42 @@
  */
 package com.raven.form;
 
+import com.raven.Model2.VCmodel;
+import com.raven.Service.Service_Voucher;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author LENOVO
  */
 public class ChiTietVoucher extends javax.swing.JDialog {
 
+    public enum ActionType {
+        ADD, EDIT
+    }
+    private ActionType actionType;
+    private Service_Voucher sv = new Service_Voucher();
+    private List<VCmodel> list = sv.getAll();
+
     /**
      * Creates new form ChiTietVoucher
      */
-    public ChiTietVoucher(java.awt.Frame parent, boolean modal) {
+    public ChiTietVoucher(java.awt.Frame parent, boolean modal, ActionType actionType) {
         super(parent, modal);
         initComponents();
+        this.actionType = actionType;
         this.setLocationRelativeTo(null);
+        if (actionType == ActionType.EDIT) {
+            lbName.setText("Sửa mã giảm giá");
+        }
     }
 
     /**
@@ -28,21 +51,24 @@ public class ChiTietVoucher extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        txtma = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         luuBtn = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtTen = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        ngaybd = new com.toedter.calendar.JDateChooser();
+        giobd = new javax.swing.JComboBox<>();
+        phutbd = new javax.swing.JComboBox<>();
+        phutkt = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        ngaykt = new com.toedter.calendar.JDateChooser();
+        giokt = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        txtTien = new javax.swing.JTextField();
+        lbName = new javax.swing.JLabel();
+
+        txtma.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -60,26 +86,30 @@ public class ChiTietVoucher extends javax.swing.JDialog {
 
         jLabel2.setText("Ngày bắt đầu");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        giobd.setEditable(true);
+        giobd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
+        phutbd.setEditable(true);
+        phutbd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+        phutkt.setEditable(true);
+        phutkt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
+        phutkt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
+                phutktActionPerformed(evt);
             }
         });
 
         jLabel3.setText("Ngày kết thúc");
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        giokt.setEditable(true);
+        giokt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
 
         jLabel4.setText("Số tiền giảm");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Thêm mới mã giảm giá");
+        lbName.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lbName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbName.setText("Thêm mới mã giảm giá");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -88,7 +118,7 @@ public class ChiTietVoucher extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(45, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbName, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                             .addComponent(luuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -101,49 +131,49 @@ public class ChiTietVoucher extends javax.swing.JDialog {
                                 .addComponent(jLabel4))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTextField1)
+                                .addComponent(txtTen)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ngaybd, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(giobd, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(phutbd, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ngaykt, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(giokt, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(phutkt, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtTien, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(44, 44, 44)))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lbName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ngaybd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(giobd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(phutbd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ngaykt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(giokt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(phutkt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(41, 41, 41)
                 .addComponent(luuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -163,13 +193,125 @@ public class ChiTietVoucher extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+    private void phutktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phutktActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
+    }//GEN-LAST:event_phutktActionPerformed
 
     private void luuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuBtnActionPerformed
         // TODO add your handling code here:
+<<<<<<< HEAD
+=======
+        if (actionType == ActionType.ADD) {
+            // Xử lý khi thêm mới
+            Integer ma = Integer.valueOf(txtma.getText());
+            String ten = txtTen.getText();
+            String gbd = " " + giobd.getSelectedItem().toString() + ":" + phutbd.getSelectedItem().toString() + ":00";
+            String gkt = " " + giokt.getSelectedItem().toString() + ":" + phutkt.getSelectedItem().toString() + ":00";
+            Date nbd = ngaybd.getDate();
+            Date nkt = ngaykt.getDate();
+            String money = txtTien.getText();
+            String status = "Chưa bắt đầu";
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String ngaybatdau = sdf.format(nbd);
+            String ngayketthuc = sdf.format(nkt);
+
+            VCmodel vc = new VCmodel(ma, ten, ngaybatdau + gbd, ngayketthuc + gkt, money, status);
+            boolean addVC = sv.add(vc);
+
+            if (addVC) {
+                JOptionPane.showMessageDialog(this, "Thêm thành công");
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Thêm thất bại");
+            }
+        } else if (actionType == ActionType.EDIT) {
+            // Xử lý khi sửa
+            Integer ma = Integer.valueOf(txtma.getText());
+            String ten = txtTen.getText();
+            String gbd = " " + giobd.getSelectedItem().toString() + ":" + phutbd.getSelectedItem().toString() + ":00";
+            String gkt = " " + giokt.getSelectedItem().toString() + ":" + phutkt.getSelectedItem().toString() + ":00";
+            Date nbd = ngaybd.getDate();
+            Date nkt = ngaykt.getDate();
+            String money = txtTien.getText();
+            String status = "Chưa bắt đầu";
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String ngaybatdau = sdf.format(nbd);
+            String ngayketthuc = sdf.format(nkt);
+
+            VCmodel vc = new VCmodel(ma, ten, ngaybatdau + gbd, ngayketthuc + gkt, money, status);
+            boolean updateVC = sv.update(vc);
+
+            if (updateVC) {
+                JOptionPane.showMessageDialog(this, "Sửa thành công");
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Sửa thất bại");
+            }
+        }
+>>>>>>> 197476dea19490937f0d8ff4039e32b8d039e3c9
     }//GEN-LAST:event_luuBtnActionPerformed
+
+    public void delete() {
+        Integer ma = Integer.valueOf(txtma.getText());
+        String ten = txtTen.getText();
+        String gbd = " " + giobd.getSelectedItem().toString() + ":" + phutbd.getSelectedItem().toString() + ":00";
+        String gkt = " " + giokt.getSelectedItem().toString() + ":" + phutkt.getSelectedItem().toString() + ":00";
+        Date nbd = ngaybd.getDate();
+        Date nkt = ngaykt.getDate();
+        String money = txtTien.getText();
+        String status = "Đã xóa";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String ngaybatdau = sdf.format(nbd);
+        String ngayketthuc = sdf.format(nkt);
+
+        VCmodel vc = new VCmodel(ma, ten, ngaybatdau + gbd, ngayketthuc + gkt, money, status);
+        boolean deleteVC = sv.delete(vc);
+
+        if (deleteVC) {
+            JOptionPane.showMessageDialog(this, "Xóa thành công");
+        } else {
+            JOptionPane.showMessageDialog(this, "Xóa thất bại");
+        }
+    }
+
+    public void detail(int index) {
+        try {
+            VCmodel vch = list.get(index);
+            txtma.setText(String.valueOf(vch.getMa()));
+            txtTen.setText(vch.getTen());
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date datebd = format.parse(vch.getNgay_bd());
+            Date datekt = format.parse(vch.getNgay_kt());
+            ngaybd.setDate(datebd);
+            ngaykt.setDate(datekt);
+
+            Calendar calendar_bd = Calendar.getInstance();
+            Calendar calendar_kt = Calendar.getInstance();
+            calendar_bd.setTime(datebd);
+            calendar_kt.setTime(datekt);
+            // Lấy giờ từ đối tượng Calendar
+            int hourOfDay_bd = calendar_bd.get(Calendar.HOUR_OF_DAY); // Lấy giờ trong 24 giờ
+            int minuteOfDay_bd = calendar_bd.get(Calendar.MINUTE);
+            
+            int hourOfDay_kt = calendar_kt.get(Calendar.HOUR_OF_DAY); // Lấy giờ trong 24 giờ
+            int minuteOfDay_kt = calendar_kt.get(Calendar.MINUTE);
+
+            giobd.setSelectedItem(hourOfDay_bd);
+            phutbd.setSelectedItem(minuteOfDay_bd);
+            
+            giokt.setSelectedItem(hourOfDay_kt);
+            phutkt.setSelectedItem(minuteOfDay_kt);
+
+//            System.out.println(hourOfDay_bd);
+//            System.out.println(minuteOfDay_bd);
+            txtTien.setText(vch.getTien_giam());
+        } catch (ParseException ex) {
+            Logger.getLogger(ChiTietVoucher.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -201,7 +343,7 @@ public class ChiTietVoucher extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ChiTietVoucher dialog = new ChiTietVoucher(new javax.swing.JFrame(), true);
+                ChiTietVoucher dialog = new ChiTietVoucher(new javax.swing.JFrame(), true, ActionType.ADD);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -214,20 +356,21 @@ public class ChiTietVoucher extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private javax.swing.JComboBox<String> giobd;
+    private javax.swing.JComboBox<String> giokt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel lbName;
     private javax.swing.JButton luuBtn;
+    private com.toedter.calendar.JDateChooser ngaybd;
+    private com.toedter.calendar.JDateChooser ngaykt;
+    private javax.swing.JComboBox<String> phutbd;
+    private javax.swing.JComboBox<String> phutkt;
+    private javax.swing.JTextField txtTen;
+    private javax.swing.JTextField txtTien;
+    private javax.swing.JTextField txtma;
     // End of variables declaration//GEN-END:variables
 }
