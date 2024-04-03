@@ -9,7 +9,7 @@ package com.raven.Model2;
  * @author LENOVO
  */
 public class VCmodel {
-    private String ma;
+    private Integer ma;
     private String ten;
     private String ngay_bd;
     private String ngay_kt;
@@ -19,7 +19,7 @@ public class VCmodel {
     public VCmodel() {
     }
 
-    public VCmodel(String ma, String ten, String ngay_bd, String ngay_kt, String tien_giam, String status) {
+    public VCmodel(Integer ma, String ten, String ngay_bd, String ngay_kt, String tien_giam, String status) {
         this.ma = ma;
         this.ten = ten;
         this.ngay_bd = ngay_bd;
@@ -28,11 +28,11 @@ public class VCmodel {
         this.status = status;
     }
 
-    public String getMa() {
+    public Integer getMa() {
         return ma;
     }
 
-    public void setMa(String ma) {
+    public void setMa(Integer ma) {
         this.ma = ma;
     }
 
