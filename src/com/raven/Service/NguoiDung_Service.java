@@ -19,7 +19,7 @@ import com.raven.dbConnect.DBConnect;
 public class NguoiDung_Service {
     Connection con = DBConnect.getConnection();
 
-    public List<nguoiDung> getAll_KH() {
+    public List<nguoiDung> getAll_NV() {
         String sql = "select*from NhanVien";
         try (PreparedStatement prs = con.prepareStatement(sql)) {
             ResultSet rs = prs.executeQuery();
@@ -81,16 +81,23 @@ public class NguoiDung_Service {
         }
         return check > 0;
     }
-    public boolean updateNhanVien(nguoiDung nd) {
-        String sql = "UPDATE NhanVien SET username=?, password=?, ten_nv=?, gioi_tinh=?, id_vaitro=?, trang_thai=? WHERE cccd=?";
+    public boolean updateNhanVien(nguoiDung nv) {
+        String sql = "UPDATE NhanVien SET username=?,"
+                + " password=?, ten_nv=?, hinh_anh=?, email=?, ngay_dangki=?,"
+                + " gioi_tinh=?, sdt=?, ngay_sinh=?, id_vaitro=?, trang_thai=? WHERE cccd=?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nd.getUsername());
-            ps.setString(2, nd.getPassword());
-            ps.setString(3, nd.getTen_nv());
-            ps.setInt(4, nd.getGioi_tinh());
-            ps.setInt(5, nd.getId_vaitro());
-            ps.setString(6, nd.getTrang_thai());
-            ps.setString(7, nd.getCccd());
+            ps.setObject(1, nv.getUsername());
+            ps.setObject(2, nv.getPassword());
+            ps.setObject(3, nv.getTen_nv());
+            ps.setObject(4, nv.getHinh_anh());
+            ps.setObject(5, nv.getEmail());
+            ps.setObject(6, nv.getNgay_dangki());
+            ps.setObject(7, nv.getGioi_tinh());
+            ps.setObject(8, nv.getSdt());
+            ps.setObject(9, nv.getNgay_sinh());
+            ps.setObject(10, nv.getId_vaitro());
+            ps.setObject(11, nv.getTrang_thai());
+            ps.setObject(12, nv.getCccd());
             int updatedRows = ps.executeUpdate();
             return updatedRows > 0;
         } catch (SQLException e) {

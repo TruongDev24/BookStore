@@ -4,11 +4,28 @@
  */
 package com.raven.form;
 
+import com.raven.Model2.DangNhap;
+import com.raven.Service.dangNhapService;
+import com.raven.main.Main;
+import java.util.List;
+import javax.mail.PasswordAuthentication;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author LENOVO
  */
 public class Form_Login extends javax.swing.JFrame {
+
+    List<DangNhap> list;
+    dangNhapService sv = new dangNhapService();
 
     /**
      * Creates new form Form_Login
@@ -31,11 +48,14 @@ public class Form_Login extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        username = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        dangNhapBtn = new javax.swing.JButton();
+        showBtn = new javax.swing.JCheckBox();
+        passw = new javax.swing.JPasswordField();
+        txtTB1 = new javax.swing.JLabel();
+        txtTB2 = new javax.swing.JLabel();
+        help = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -72,22 +92,36 @@ public class Form_Login extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(249, 232, 151));
         jLabel3.setText("Password");
 
-        jButton1.setBackground(new java.awt.Color(255, 195, 116));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setText("Đăng nhập");
-        jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.setMargin(new java.awt.Insets(3, 14, 3, 14));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        dangNhapBtn.setBackground(new java.awt.Color(255, 195, 116));
+        dangNhapBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        dangNhapBtn.setText("Đăng nhập");
+        dangNhapBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        dangNhapBtn.setMargin(new java.awt.Insets(3, 14, 3, 14));
+        dangNhapBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                dangNhapBtnActionPerformed(evt);
             }
         });
 
-        jCheckBox1.setForeground(new java.awt.Color(249, 232, 151));
-        jCheckBox1.setText("Hiển thị mật khẩu");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        showBtn.setForeground(new java.awt.Color(249, 232, 151));
+        showBtn.setText("Hiển thị mật khẩu");
+        showBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                showBtnActionPerformed(evt);
+            }
+        });
+
+        txtTB1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtTB1.setForeground(new java.awt.Color(255, 0, 0));
+
+        txtTB2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtTB2.setForeground(new java.awt.Color(255, 0, 0));
+
+        help.setForeground(new java.awt.Color(249, 232, 151));
+        help.setText("Liên hệ?");
+        help.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                helpMouseClicked(evt);
             }
         });
 
@@ -100,16 +134,24 @@ public class Form_Login extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(122, 122, 122)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(dangNhapBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jCheckBox1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtTB2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtTB1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(showBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(help))
+                            .addComponent(passw))))
                 .addContainerGap(46, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -117,17 +159,23 @@ public class Form_Login extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
-                .addComponent(jLabel2)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtTB1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtTB2))
+                .addGap(8, 8, 8)
+                .addComponent(passw, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(showBtn)
+                    .addComponent(help))
                 .addGap(20, 20, 20)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dangNhapBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(151, Short.MAX_VALUE))
         );
 
@@ -145,13 +193,87 @@ public class Form_Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void showBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        if (showBtn.isSelected()) {
+            passw.setEchoChar((char) 0);
+        } else {
+            passw.setEchoChar('*');
+        }
+    }//GEN-LAST:event_showBtnActionPerformed
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+    private void dangNhapBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dangNhapBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+        String user = username.getText();
+        String pw = String.valueOf(passw.getPassword());
+        list = sv.getAll();
+        for (DangNhap dn : list) {
+            if (!user.equals(dn.getUser())) {
+                txtTB1.setText("Sai username!");
+                System.out.println(dn.getUser());
+            } else if (!pw.equals(dn.getPass())) {
+                txtTB2.setText("Sai password!");
+            } else if (user.equals(dn.getUser()) && pw.equals(dn.getPass())) {
+                txtTB1.setText(null);
+                txtTB2.setText(null);
+                JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+                this.dispose();
+                Main m = new Main();
+                m.setVisible(true);
+            }
+        }
+
+    }//GEN-LAST:event_dangNhapBtnActionPerformed
+
+    private void helpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_helpMouseClicked
+        // TODO add your handling code here:
+        String phoneNumber = "123-456-7890"; // Số điện thoại mẫu
+        JOptionPane.showMessageDialog(this, "Quản lí: " + phoneNumber, "Thông tin liên hệ",
+                JOptionPane.INFORMATION_MESSAGE);
+        
+        String to = "truongdaik90@gmail.com";
+        String subject = "a";
+        String messageText = "a";
+        String from = "truonglevan496@gmail.com";
+        String password = "zhdhjyankyhptebz";
+
+        // Cài đặt thông số cho server email
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com"); // Đổi lại với SMTP server của bạn
+        props.put("mail.smtp.port", "587"); // Đổi lại với cổng của SMTP server
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+
+        // Tạo session để gửi email
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(from, password);
+            }
+        });
+
+        try {
+            // Tạo message
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(to));
+            message.setSubject(subject);
+            message.setText(messageText);
+
+            // Gửi email
+            Transport.send(message);
+
+            JOptionPane.showMessageDialog(this, "Email sent successfully");
+
+        } catch (MessagingException e) {
+            System.out.println(e.getMessage());
+            System.out.println(JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_helpMouseClicked
 
     /**
      * @param args the command line arguments
@@ -189,14 +311,17 @@ public class Form_Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JButton dangNhapBtn;
+    private javax.swing.JLabel help;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JPasswordField passw;
+    private javax.swing.JCheckBox showBtn;
+    private javax.swing.JLabel txtTB1;
+    private javax.swing.JLabel txtTB2;
+    private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

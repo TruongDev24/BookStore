@@ -35,19 +35,19 @@ public class Menu extends javax.swing.JPanel {
         listMenu1.addItem(new Model_Menu("6", "Bán hàng", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("8", "NXB, tác giả", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("2", "Quản lí sách", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("3", "Thể loại", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("4", "Hóa đơn", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("5", "Khách hàng", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("6", "Khuyến mãi", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("1", "Mã giảm giá", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("3", "Mã giảm giá", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("7", "Quản lí tài khoản", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("9", "Tài khoản của tôi", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-//        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-//        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-//        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
+        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         
         listMenu1.addItem(new Model_Menu("10", "Logout", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
@@ -68,7 +68,7 @@ public class Menu extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/fpt.png"))); // NOI18N
-        jLabel1.setText("   LIBRARY     ");
+        jLabel1.setText("    BookStore    ");
 
         javax.swing.GroupLayout panelMovingLayout = new javax.swing.GroupLayout(panelMoving);
         panelMoving.setLayout(panelMovingLayout);
@@ -76,7 +76,7 @@ public class Menu extends javax.swing.JPanel {
             panelMovingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMovingLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                 .addContainerGap())
         );
         panelMovingLayout.setVerticalGroup(

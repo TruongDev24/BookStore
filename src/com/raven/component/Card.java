@@ -53,7 +53,7 @@ public class Card extends javax.swing.JPanel {
 
         lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/stock.png"))); // NOI18N
 
-        lbTitle.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        lbTitle.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         lbTitle.setForeground(new java.awt.Color(255, 255, 255));
         lbTitle.setText("Title");
 
@@ -61,7 +61,7 @@ public class Card extends javax.swing.JPanel {
         lbValues.setForeground(new java.awt.Color(255, 255, 255));
         lbValues.setText("Values");
 
-        lbDescription.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
+        lbDescription.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbDescription.setForeground(new java.awt.Color(255, 255, 255));
         lbDescription.setText("Description");
 
@@ -76,7 +76,7 @@ public class Card extends javax.swing.JPanel {
                     .addComponent(lbValues)
                     .addComponent(lbTitle)
                     .addComponent(lbIcon))
-                .addContainerGap(283, Short.MAX_VALUE))
+                .addContainerGap(273, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,7 +89,7 @@ public class Card extends javax.swing.JPanel {
                 .addComponent(lbValues)
                 .addGap(18, 18, 18)
                 .addComponent(lbDescription)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

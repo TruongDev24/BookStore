@@ -197,13 +197,29 @@ public class ChiTietVoucher extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_phutktActionPerformed
 
+    public boolean checkNull() {
+        if (txtTen.getText() == null || txtTen.getText().trim().isEmpty()
+                || ngaybd.getDate() == null || ngaykt.getDate() == null
+                || txtTien.getText() == null || txtTien.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin");
+            return false;
+        }
+        String tienText = txtTien.getText().trim();
+        if (txtTien.getText().startsWith("0") || !tienText.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập số");
+            return false;
+        }
+        return true;
+    }
+
     private void luuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuBtnActionPerformed
         // TODO add your handling code here:
-<<<<<<< HEAD
-=======
         if (actionType == ActionType.ADD) {
             // Xử lý khi thêm mới
-            Integer ma = Integer.valueOf(txtma.getText());
+            if (!checkNull()) {
+                return;
+            }
+            Integer ma = 0;
             String ten = txtTen.getText();
             String gbd = " " + giobd.getSelectedItem().toString() + ":" + phutbd.getSelectedItem().toString() + ":00";
             String gkt = " " + giokt.getSelectedItem().toString() + ":" + phutkt.getSelectedItem().toString() + ":00";
@@ -227,6 +243,9 @@ public class ChiTietVoucher extends javax.swing.JDialog {
             }
         } else if (actionType == ActionType.EDIT) {
             // Xử lý khi sửa
+            if (!checkNull()) {
+                return;
+            }
             Integer ma = Integer.valueOf(txtma.getText());
             String ten = txtTen.getText();
             String gbd = " " + giobd.getSelectedItem().toString() + ":" + phutbd.getSelectedItem().toString() + ":00";
@@ -250,7 +269,6 @@ public class ChiTietVoucher extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Sửa thất bại");
             }
         }
->>>>>>> 197476dea19490937f0d8ff4039e32b8d039e3c9
     }//GEN-LAST:event_luuBtnActionPerformed
 
     public void delete() {
@@ -295,13 +313,13 @@ public class ChiTietVoucher extends javax.swing.JDialog {
             // Lấy giờ từ đối tượng Calendar
             int hourOfDay_bd = calendar_bd.get(Calendar.HOUR_OF_DAY); // Lấy giờ trong 24 giờ
             int minuteOfDay_bd = calendar_bd.get(Calendar.MINUTE);
-            
+
             int hourOfDay_kt = calendar_kt.get(Calendar.HOUR_OF_DAY); // Lấy giờ trong 24 giờ
             int minuteOfDay_kt = calendar_kt.get(Calendar.MINUTE);
 
             giobd.setSelectedItem(hourOfDay_bd);
             phutbd.setSelectedItem(minuteOfDay_bd);
-            
+
             giokt.setSelectedItem(hourOfDay_kt);
             phutkt.setSelectedItem(minuteOfDay_kt);
 

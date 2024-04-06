@@ -6,9 +6,11 @@
 package com.raven.main;
 
 import com.raven.event.EventMenuSelected;
+import com.raven.form.Form_BanHang;
+//import com.raven.form.Form_BanHang;
 import com.raven.form.Form_QLKhachHang;
 import com.raven.form.Form_QLSach;
-import com.raven.form.Form_QLTheLoai;
+//import com.raven.form.Form_QLTheLoai;
 import com.raven.form.Form_Home;
 import com.raven.form.Form_Login;
 import com.raven.form.Form_QLNguoiDung;
@@ -33,11 +35,12 @@ public class Main extends javax.swing.JFrame {
     private Form_Home home;
     private Form_QLNXB_TG form1;
     private Form_QLSach form2;
-    private Form_QLTheLoai form3;
+//    private Form_QLTheLoai form3;
     private Form_QLHoaDon form4;
     private Form_QLKhachHang form5;
     private Form_QLKhuyenMai form6;
     private Form_QLNguoiDung form7;
+    private Form_BanHang form9;
     private Form_QLVoucher form8;
 
     public Main() {
@@ -46,11 +49,12 @@ public class Main extends javax.swing.JFrame {
         home = new Form_Home();
         form1 = new Form_QLNXB_TG();
         form2 = new Form_QLSach();
-        form3 = new Form_QLTheLoai();
+//        form3 = new Form_QLTheLoai();
         form4 = new Form_QLHoaDon();
         form5 = new Form_QLKhachHang();
         form6 = new Form_QLKhuyenMai();
         form7 = new Form_QLNguoiDung();
+        form9 = new Form_BanHang();
         form8 = new Form_QLVoucher();
         menu.initMoving(Main.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
@@ -59,26 +63,24 @@ public class Main extends javax.swing.JFrame {
                 if (index == 1) {
                     setForm(home);
                 } else if (index == 2) {
-//                    setForm(form1);
+                    setForm(form9);
                 } else if (index == 3) {
                     setForm(form1);
                 } else if (index == 4) {
                     setForm(form2);
                 } else if (index == 5) {
-                    setForm(form3);
-                } else if (index == 6) {
                     setForm(form4);
-                } else if (index == 7) {
+                } else if (index == 6) {
                     setForm(form5);
-                } else if (index == 8) {
+                } else if (index == 7) {
                     setForm(form6);
-                } else if (index == 9) {
+                } else if (index == 8) {
                     setForm(form8);
-                } else if (index == 10) {
+                } else if (index == 9) {
                     setForm(form7);
-                } else if (index == 11) {
+                } else if (index == 10) {
                     account();
-                } else if (index == 15) {
+                } else if (index == 18) {
                     logout();
                 }
             }
@@ -141,7 +143,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(header2, javax.swing.GroupLayout.DEFAULT_SIZE, 965, Short.MAX_VALUE)
+                    .addComponent(header2, javax.swing.GroupLayout.DEFAULT_SIZE, 1139, Short.MAX_VALUE)
                     .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -149,7 +151,7 @@ public class Main extends javax.swing.JFrame {
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 751, Short.MAX_VALUE)
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addComponent(header2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

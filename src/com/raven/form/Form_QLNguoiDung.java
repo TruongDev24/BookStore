@@ -48,7 +48,7 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
     public Form_QLNguoiDung() {
         initComponents();
         dtm = (DefaultTableModel) table.getModel();
-        listNV = nvService.getAll_KH();
+        listNV = nvService.getAll_NV();
         ShowData(listNV);
     }
 
@@ -264,310 +264,26 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        JTextField txtCccd = new JTextField();
-        JTextField txtTenNV = new JTextField();
-        JTextField txtUsername = new JTextField();
-        JPasswordField txtPassWord = new JPasswordField();
-        JTextField txtEmail = new JTextField();
-        JTextField txtNgayDangki = new JTextField();
-        JTextField txtSdt = new JTextField();
-        JTextField txtNgaySinh = new JTextField();
-        String[] gioiTinhOptions = {"Nam", "Nữ"};
-        JComboBox<String> cbxGioiTinh = new JComboBox<>(gioiTinhOptions);
-        String[] VaitroOptions = {"Quản lý", "Nhân viên bán hàng", "Kế toán"};
-        JComboBox<String> cbxvaiTro = new JComboBox<>(VaitroOptions);
-
-        JPanel panel = new JPanel(new GridLayout(0, 1));
-        panel.setPreferredSize(new Dimension(400, 500));
-        panel.add(new JLabel("Cccd:"));
-        panel.add(txtCccd);
-        panel.add(new JLabel("Tên nhân viên:"));
-        panel.add(txtTenNV);
-        panel.add(new JLabel("Username:"));
-        panel.add(txtUsername);
-        panel.add(new JLabel("Email:"));
-        panel.add(txtEmail);
-        panel.add(new JLabel("Ngày đăng ký:"));
-        panel.add(txtNgayDangki);
-        panel.add(new JLabel("Sdt:"));
-        panel.add(txtSdt);
-        panel.add(new JLabel("Ngày sinh:"));
-        panel.add(txtNgaySinh);
-        panel.add(new JLabel("Password:"));
-        panel.add(txtPassWord);
-        panel.add(new JLabel("Giới tính:"));
-        panel.add(cbxGioiTinh);
-        panel.add(new JLabel("Vai trò:"));
-        panel.add(cbxvaiTro);
-        JButton btnChonAnh = new JButton("Chọn ảnh"); // Thêm nút chọn ảnh
-        JLabel lblHinhAnh = new JLabel(); // Tạo JLabel để hiển thị hình ảnh
-        panel.add(new JLabel("Hình ảnh:"));
-        panel.add(btnChonAnh);
-        panel.add(lblHinhAnh);
-        btnChonAnh.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Xử lý sự kiện khi người dùng nhấn nút chọn ảnh
-                chooseImage(lblHinhAnh);
-            }
-
-            private void chooseImage(JLabel lblHinhAnh) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "jpg", "jpeg", "png", "gif");
-                fileChooser.setFileFilter(filter);
-
-                // Sử dụng null như là parent component thay vì "this"
-                int result = fileChooser.showOpenDialog(null);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    String imagePath = selectedFile.getAbsolutePath();
-                    loadImageFromComputer(imagePath, lblHinhAnh);
-                }
-            }
-
-            private void loadImageFromComputer(String imagePath, JLabel lblHinhAnh) {
-                try {
-                    ImageIcon imageIcon = new ImageIcon(imagePath);
-                    Image image = imageIcon.getImage();
-                    Image scaledImage = image.getScaledInstance(lblHinhAnh.getWidth(), lblHinhAnh.getHeight(), Image.SCALE_SMOOTH);
-                    lblHinhAnh.setIcon(new ImageIcon(scaledImage));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        int result = JOptionPane.showConfirmDialog(null, panel, "Thêm mới người dùng",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
-            String cccd = txtCccd.getText();
-            String tenNV = txtTenNV.getText();
-            String username = txtUsername.getText();
-            String email = txtEmail.getText();
-            String ngayDangKi = txtNgayDangki.getText();
-            String sdt = txtSdt.getText();
-            String ngaySinh = txtNgaySinh.getText();
-            String password = new String(txtPassWord.getPassword());
-            String gioiTinh = (String) cbxGioiTinh.getSelectedItem();
-            String vaiTro = (String) cbxvaiTro.getSelectedItem();
-            String trangThai = (String) cbxLoc.getSelectedItem();
-            String hinhAnh = lblHinhAnh.getText(); // Lấy đường dẫn hình ảnh từ JLabel
-
-            int roleId = -1; // Giá trị mặc định cho vai trò không hợp lệ
-            switch (vaiTro) {
-                case "Quản lý":
-                    roleId = 1;
-                    break;
-                case "Nhân viên bán hàng":
-                    roleId = 2;
-                    break;
-                case "Kế toán":
-                    roleId = 3;
-                    break;
-                default:
-                    break;
-            }
-            // Tạo một đối tượng nguoiDung mới với các giá trị đã nhập
-            nguoiDung newNguoiDung = new nguoiDung();
-            newNguoiDung.setCccd(cccd);
-            newNguoiDung.setTen_nv(tenNV);
-            newNguoiDung.setUsername(username);
-            newNguoiDung.setPassword(password);
-            newNguoiDung.setEmail(email);
-            newNguoiDung.setNgay_dangki(ngayDangKi);
-            newNguoiDung.setSdt(sdt);
-            newNguoiDung.setNgay_sinh(ngaySinh);
-            newNguoiDung.setGioi_tinh(gioiTinh.equals("Nam") ? 0 : 1);
-            newNguoiDung.setId_vaitro(roleId);
-            newNguoiDung.setTrang_thai(trangThai);
-            newNguoiDung.setHinh_anh(hinhAnh); // Gán đường dẫn hình ảnh cho đối tượng newNguoiDung
-
-            // Gọi phương thức add trong NguoiDung_Service để thêm người dùng mới
-            boolean success = nvService.add(newNguoiDung);
-            if (success) {
-                // Làm mới bảng để hiển thị dữ liệu mới
-                listNV = nvService.getAll_KH();
-                ShowData(listNV);
-                JOptionPane.showMessageDialog(null, "Thêm mới người dùng thành công!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Thêm mới người dùng thất bại! Vui lòng thử lại.");
-
-            }
-        }
+        NguoiDungDJ ct = new NguoiDungDJ(null, true, NguoiDungDJ.ActionType.ADD);
+        ct.setVisible(true);
+        listNV = nvService.getAll_NV();
+        ShowData(listNV);
     }//GEN-LAST:event_btnThemActionPerformed
-    private boolean isValidEmail(String email) {
-        // Sử dụng biểu thức chính quy để kiểm tra định dạng email
-        String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        return email.matches(regex);
-    }
 
-// Phương thức kiểm tra định dạng ngày tháng
-    private boolean isValidDate(String date) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-            sdf.setLenient(false);
-            sdf.parse(date);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
-    }
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
-        int row = table.getSelectedRow();
-        if (row >= 0) {
-            String tenNV = table.getValueAt(row, 0).toString();
-            String gioiTinh = table.getValueAt(row, 1).toString();
-            String usename = table.getValueAt(row, 2).toString();
-            String password = table.getValueAt(row, 3).toString();
-            String vaiTro = table.getValueAt(row, 4).toString(); // Lấy thông tin vai trò
-            String trangThai = table.getValueAt(row, 5).toString();
 
-            JTextField txtTenNV = new JTextField(tenNV);
-            JTextField txtUsename = new JTextField(usename);
-            JTextField txtPassWord = new JTextField(password);
-            JRadioButton rdoNam = new JRadioButton("Nam");
-            JRadioButton rdoNu = new JRadioButton("Nữ");
-            JTextField txtID = new JTextField();
-            txtID.setText(table.getValueAt(row, 0).toString());
-
-            if (gioiTinh.equalsIgnoreCase("Nam")) {
-                rdoNam.setSelected(true);
-                rdoNu.setSelected(false);
-            } else {
-                rdoNam.setSelected(false);
-                rdoNu.setSelected(true);
-            }
-
-            cbxLoc.setSelectedItem(trangThai);
-
-            // Hiển thị vai trò trong combobox
-            switch (vaiTro) {
-                case "Quản lý":
-                    cbxLoc.setSelectedIndex(0);
-                    break;
-                case "Nhân viên bán hàng":
-                    cbxLoc.setSelectedIndex(1);
-                    break;
-                case "Kế toán":
-                    cbxLoc.setSelectedIndex(2);
-                    break;
-                default:
-                    break;
-            }
-        }
     }//GEN-LAST:event_tableMouseClicked
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        int selectedRow = table.getSelectedRow(); // Lấy chỉ số hàng đã chọn trong bảng
-        if (selectedRow == -1) {
-            // Nếu không có hàng nào được chọn, hiển thị thông báo và kết thúc phương thức
-            JOptionPane.showMessageDialog(null, "Vui lòng chọn người dùng cần sửa.");
+        int row = table.getSelectedRow();
+        if (row == -1) {
             return;
         }
-
-        // Hiển thị hộp thoại sửa thông tin người dùng
-        JTextField txtCccd = new JTextField();
-        JTextField txtTenNV = new JTextField();
-        JTextField txtUsername = new JTextField();
-        JPasswordField txtPassWord = new JPasswordField();
-        JTextField txtEmail = new JTextField();
-        JTextField txtNgayDangki = new JTextField();
-        JTextField txtSdt = new JTextField();
-        JTextField txtNgaySinh = new JTextField();
-        String[] gioiTinhOptions = {"Nam", "Nữ"};
-        JComboBox<String> cbxGioiTinh = new JComboBox<>(gioiTinhOptions);
-        String[] VaitroOptions = {"Quản lý", "Nhân viên bán hàng", "Kế toán"};
-        JComboBox<String> cbxVaiTro = new JComboBox<>(VaitroOptions);
-
-        JPanel panel = new JPanel(new GridLayout(0, 1));
-        panel.add(new JLabel("Cccd:"));
-        panel.add(txtCccd);
-        panel.add(new JLabel("Tên nhân viên:"));
-        panel.add(txtTenNV);
-        panel.add(new JLabel("Username:"));
-        panel.add(txtUsername);
-        panel.add(new JLabel("Password:"));
-        panel.add(txtPassWord);
-        panel.add(new JLabel("Giới tính:"));
-        panel.add(cbxGioiTinh);
-        panel.add(new JLabel("Vai trò:"));
-        panel.add(cbxVaiTro);
-
-        // Lấy thông tin người dùng từ hàng được chọn trong bảng
-        String cccd = table.getValueAt(selectedRow, 0).toString();
-        String tenNV = table.getValueAt(selectedRow, 1).toString();
-        String gioiTinh = table.getValueAt(selectedRow, 2).toString();
-        String username = table.getValueAt(selectedRow, 3).toString();
-        String password = table.getValueAt(selectedRow, 4).toString();
-        String vaiTro = table.getValueAt(selectedRow, 5).toString();
-        String trangThai = table.getValueAt(selectedRow, 6).toString();
-
-        // Hiển thị thông tin người dùng đã chọn trong hộp thoại sửa
-        txtCccd.setText(cccd);
-        txtTenNV.setText(tenNV);
-        txtUsername.setText(username);
-        txtPassWord.setText(password);
-        cbxGioiTinh.setSelectedItem(gioiTinh);
-        cbxVaiTro.setSelectedItem(vaiTro);
-
-        int result = JOptionPane.showConfirmDialog(null, panel, "Sửa thông tin người dùng",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
-            // Lấy thông tin mới từ các trường nhập vào trong hộp thoại
-            String newCccd = txtCccd.getText();
-            String newTenNV = txtTenNV.getText();
-            String newUsername = txtUsername.getText();
-            String newPassword = new String(txtPassWord.getPassword());
-            String newEmail = txtEmail.getText();
-            String newNgayDangKi = txtNgayDangki.getText();
-            String newSdt = txtSdt.getText();
-            String newNgaySinh = txtNgaySinh.getText();
-            String newGioiTinh = (String) cbxGioiTinh.getSelectedItem();
-            String newVaiTro = (String) cbxVaiTro.getSelectedItem();
-            // Thêm logic validation ở đây
-            // Ví dụ: Kiểm tra xem các trường thông tin đã nhập có hợp lệ không
-            if (newCccd.isEmpty() || newTenNV.isEmpty() || newUsername.isEmpty() || newPassword.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Vui lòng điền đầy đủ thông tin.");
-            } else {
-                // Tạo một đối tượng nguoiDung mới với các giá trị mới
-                nguoiDung updatedNguoiDung = new nguoiDung();
-                updatedNguoiDung.setCccd(newCccd);
-                updatedNguoiDung.setTen_nv(newTenNV);
-                updatedNguoiDung.setUsername(newUsername);
-                updatedNguoiDung.setPassword(newPassword);
-                updatedNguoiDung.setEmail(newEmail);
-                updatedNguoiDung.setNgay_dangki(newNgayDangKi);
-                updatedNguoiDung.setSdt(newSdt);
-                updatedNguoiDung.setNgay_sinh(newNgaySinh);
-                updatedNguoiDung.setGioi_tinh(newGioiTinh.equals("Nam") ? 0 : 1);
-                updatedNguoiDung.setId_vaitro(getRoleId(newVaiTro));
-                updatedNguoiDung.setTrang_thai(trangThai);
-
-                // Gọi phương thức update trong NguoiDung_Service để cập nhật thông tin người dùng
-                boolean success = nvService.updateNhanVien(updatedNguoiDung);
-                if (success) {
-                    // Nếu cập nhật thành công, cập nhật lại bảng hiển thị dữ liệu
-                    listNV = nvService.getAll_KH();
-                    ShowData(listNV);
-                    JOptionPane.showMessageDialog(null, "Sửa thông tin người dùng thành công!");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Sửa thông tin người dùng thất bại! Vui lòng thử lại.");
-                }
-            }
-        }
-    }
-
-    private int getRoleId(String roleName) {
-        switch (roleName) {
-            case "Quản lý":
-                return 1;
-            case "Nhân viên bán hàng":
-                return 2;
-            case "Kế toán":
-                return 3;
-            default:
-                return -1; // Giá trị mặc định cho vai trò không hợp lệ
-        }
+        NguoiDungDJ ct = new NguoiDungDJ(null, true, NguoiDungDJ.ActionType.EDIT);
+        ct.detail(row);
+        ct.setVisible(true);
+        listNV = nvService.getAll_NV();
+        ShowData(listNV);
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
@@ -588,7 +304,7 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
             boolean success = nvService.delete(cccdToDelete);
             if (success) {
                 // Nếu xóa thành công, cập nhật lại bảng hiển thị dữ liệu
-                listNV = nvService.getAll_KH();
+                listNV = nvService.getAll_NV();
                 ShowData(listNV);
                 JOptionPane.showMessageDialog(null, "Đã xóa người dùng thành công.");
             } else {
@@ -597,7 +313,7 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnXoaActionPerformed
-    
+
     private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
         filterAndSearch();
     }//GEN-LAST:event_txtTimKiemKeyReleased

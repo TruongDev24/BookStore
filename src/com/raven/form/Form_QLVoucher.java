@@ -7,8 +7,14 @@ package com.raven.form;
 
 import com.raven.Service.Service_Voucher;
 import com.raven.Model2.VCmodel;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -44,8 +50,8 @@ public final class Form_QLVoucher extends javax.swing.JPanel {
         xoaBtn = new javax.swing.JButton();
         suaBtn = new javax.swing.JButton();
         ThemBtn = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
+        cbxSort = new javax.swing.JComboBox<>();
+        searchBar = new javax.swing.JTextField();
         panelBorder1 = new com.raven.swing.PanelBorder();
         jLabel2 = new javax.swing.JLabel();
         spTable = new javax.swing.JScrollPane();
@@ -84,9 +90,19 @@ public final class Form_QLVoucher extends javax.swing.JPanel {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mặc định", "Ngày tiếp theo", "Tên voucher A-Z", "Tên voucher Z-A", "Số tiền giảm dần", "Số tiền tăng dần", "Chưa bắt đầu", "Đang diễn ra", "Đã kết thúc" }));
+        cbxSort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxSortActionPerformed(evt);
+            }
+        });
 
-        jTextField1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        searchBar.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        searchBar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchBarKeyReleased(evt);
+            }
+        });
 
         panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -126,9 +142,9 @@ public final class Form_QLVoucher extends javax.swing.JPanel {
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(spTable, javax.swing.GroupLayout.PREFERRED_SIZE, 877, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addContainerGap(21, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addComponent(spTable, javax.swing.GroupLayout.PREFERRED_SIZE, 1039, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,7 +152,7 @@ public final class Form_QLVoucher extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
+                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -150,10 +166,10 @@ public final class Form_QLVoucher extends javax.swing.JPanel {
                 .addGap(31, 31, 31)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addComponent(cbxSort, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 244, Short.MAX_VALUE)
                 .addComponent(ThemBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(suaBtn)
@@ -164,7 +180,7 @@ public final class Form_QLVoucher extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(19, 19, 19)
                     .addComponent(panelBorder1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(16, Short.MAX_VALUE)))
+                    .addContainerGap(26, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,15 +192,15 @@ public final class Form_QLVoucher extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(xoaBtn)
                             .addComponent(suaBtn)
                             .addComponent(ThemBtn))))
-                .addContainerGap(558, Short.MAX_VALUE))
+                .addContainerGap(652, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(61, Short.MAX_VALUE)
+                    .addContainerGap(66, Short.MAX_VALUE)
                     .addComponent(panelBorder1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(16, 16, 16)))
         );
@@ -223,6 +239,7 @@ public final class Form_QLVoucher extends javax.swing.JPanel {
         // TODO add your handling code here:
         int row = tbVC.getSelectedRow();
         if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn một hàng để sửa", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
         ChiTietVoucher ct = new ChiTietVoucher(null, true, ChiTietVoucher.ActionType.EDIT);
@@ -236,7 +253,12 @@ public final class Form_QLVoucher extends javax.swing.JPanel {
         // TODO add your handling code here:
         int row = tbVC.getSelectedRow();
         if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn một hàng để xóa", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
+        }
+        int choice = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+        if (choice != JOptionPane.YES_OPTION) {
+            return; // Nếu người dùng không đồng ý xóa, thoát khỏi phương thức
         }
         ChiTietVoucher ct = new ChiTietVoucher(null, true, ChiTietVoucher.ActionType.EDIT);
         ct.detail(row);
@@ -244,16 +266,237 @@ public final class Form_QLVoucher extends javax.swing.JPanel {
         list = sv.getAll();
         showData(list);
     }//GEN-LAST:event_xoaBtnActionPerformed
-    
+
+    private void searchBarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchBarKeyReleased
+        // TODO add your handling code here:
+        String searchText = searchBar.getText().trim().toLowerCase(); // Lấy văn bản từ ô tìm kiếm và chuẩn hóa nó
+
+        DefaultTableModel model = (DefaultTableModel) tbVC.getModel(); // Lấy mô hình bảng hiện tại
+
+        // Xóa tất cả các hàng khỏi bảng
+        model.setRowCount(0);
+
+        // Lặp qua tất cả các hàng trong dữ liệu ban đầu và thêm các hàng phù hợp vào bảng mới
+        for (VCmodel vc : list) {
+            if (vc.getTen().toLowerCase().contains(searchText) || vc.getTien_giam().toLowerCase().contains(searchText)
+                    || vc.getNgay_kt().toLowerCase().contains(searchText) || vc.getNgay_bd().toLowerCase().contains(searchText)
+                    || vc.getStatus().toLowerCase().contains(searchText)) {
+                model.addRow(new Object[]{
+                    vc.getMa(), vc.getTen(), vc.getNgay_bd(), vc.getNgay_kt(), vc.getTien_giam(), vc.getStatus()
+                });
+            }
+        }
+    }//GEN-LAST:event_searchBarKeyReleased
+
+    private void cbxSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSortActionPerformed
+        // TODO add your handling code here:
+        if (cbxSort.getSelectedItem().equals("Số tiền tăng dần")) {
+            sortDataByPriceAscending();
+        } else if (cbxSort.getSelectedItem().equals("Số tiền giảm dần")) {
+            sortDataByPriceDescending();
+        } else if (cbxSort.getSelectedItem().equals("Ngày tiếp theo")) {
+            sortDataByStartDateAscending();
+        } else if (cbxSort.getSelectedItem().equals("Tên voucher A-Z")) {
+            sortDataByNameAscending();
+        } else if (cbxSort.getSelectedItem().equals("Tên voucher Z-A")) {
+            sortDataByNameDescending();
+        } else if (cbxSort.getSelectedItem().equals("Chưa bắt đầu")) {
+            showDataWithStatusNotStarted();
+        } else if (cbxSort.getSelectedItem().equals("Đang diễn ra")) {
+            showOngoingVouchers();
+        } else if (cbxSort.getSelectedItem().equals("Đã kết thúc")) {
+            showExpiredVouchers();
+        } else if (cbxSort.getSelectedItem().equals("Mặc định")) {
+            list = sv.getAll();
+            showData(list);
+        }
+    }//GEN-LAST:event_cbxSortActionPerformed
+
+    private void showExpiredVouchers() {
+        DefaultTableModel model = (DefaultTableModel) tbVC.getModel(); // Lấy mô hình bảng hiện tại
+        model.setRowCount(0); // Xóa tất cả các hàng khỏi bảng để chuẩn bị hiển thị dữ liệu mới
+
+        for (VCmodel vc : list) {
+            // Kiểm tra nếu voucher có trạng thái "Đã kết thúc"
+            if (vc.getStatus().equals("Đã kết thúc")) {
+                // Thêm thông tin của voucher này vào bảng
+                model.addRow(new Object[]{
+                    vc.getMa(), vc.getTen(), vc.getNgay_bd(), vc.getNgay_kt(), vc.getTien_giam(), vc.getStatus()
+                });
+            }
+        }
+    }
+
+    private void showOngoingVouchers() {
+        DefaultTableModel model = (DefaultTableModel) tbVC.getModel(); // Lấy mô hình bảng hiện tại
+
+        // Xóa tất cả các hàng khỏi bảng
+        model.setRowCount(0);
+
+        // Lặp qua tất cả các voucher và thêm vào bảng nếu trạng thái là "Đang diễn ra"
+        for (VCmodel vc : list) {
+            if (vc.getStatus().equals("Đang diễn ra")) {
+                model.addRow(new Object[]{
+                    vc.getMa(), vc.getTen(), vc.getNgay_bd(), vc.getNgay_kt(), vc.getTien_giam(), vc.getStatus()
+                });
+            }
+        }
+    }
+
+    private void showDataWithStatusNotStarted() {
+        DefaultTableModel model = (DefaultTableModel) tbVC.getModel(); // Lấy mô hình bảng hiện tại
+        model.setRowCount(0); // Xóa tất cả các hàng trong bảng trước khi thêm dữ liệu mới
+
+        for (VCmodel vc : list) {
+            // Nếu trạng thái của voucher là "Chưa diễn ra"
+            if (vc.getStatus().equals("Chưa bắt đầu")) {
+                // Thêm voucher vào bảng
+                model.addRow(new Object[]{
+                    vc.getMa(), vc.getTen(), vc.getNgay_bd(), vc.getNgay_kt(), vc.getTien_giam(), vc.getStatus()
+                });
+            }
+        }
+    }
+
+    private void sortDataByNameDescending() {
+        DefaultTableModel model = (DefaultTableModel) tbVC.getModel(); // Lấy mô hình bảng hiện tại
+        List<VCmodel> sortedList = new ArrayList<>(list); // Sao chép danh sách hiện tại để tránh thay đổi danh sách gốc
+
+        // Sắp xếp danh sách theo tên từ Z đến A
+        Collections.sort(sortedList, new Comparator<VCmodel>() {
+            @Override
+            public int compare(VCmodel vc1, VCmodel vc2) {
+                // So sánh tên của hai voucher, chưa quan tâm đến việc viết hoa/thường
+                String name1 = vc1.getTen().toLowerCase();
+                String name2 = vc2.getTen().toLowerCase();
+                return name2.compareTo(name1); // So sánh theo chiều giảm dần
+            }
+        });
+
+        // Xóa tất cả các hàng khỏi bảng
+        model.setRowCount(0);
+
+        // Thêm lại dữ liệu đã sắp xếp vào bảng
+        for (VCmodel vc : sortedList) {
+            model.addRow(new Object[]{
+                vc.getMa(), vc.getTen(), vc.getNgay_bd(), vc.getNgay_kt(), vc.getTien_giam(), vc.getStatus()
+            });
+        }
+    }
+
+    private void sortDataByNameAscending() {
+        DefaultTableModel model = (DefaultTableModel) tbVC.getModel(); // Lấy mô hình bảng hiện tại
+        List<VCmodel> sortedList = new ArrayList<>(list); // Sao chép danh sách hiện tại để tránh thay đổi danh sách gốc
+
+        // Sắp xếp danh sách theo tên từ A đến Z
+        Collections.sort(sortedList, new Comparator<VCmodel>() {
+            @Override
+            public int compare(VCmodel vc1, VCmodel vc2) {
+                // So sánh tên của hai voucher, chưa quan tâm đến việc viết hoa/thường
+                String name1 = vc1.getTen().toLowerCase();
+                String name2 = vc2.getTen().toLowerCase();
+                return name1.compareTo(name2); // So sánh theo chiều tăng dần
+            }
+        });
+
+        // Xóa tất cả các hàng khỏi bảng
+        model.setRowCount(0);
+
+        // Thêm lại dữ liệu đã sắp xếp vào bảng
+        for (VCmodel vc : sortedList) {
+            model.addRow(new Object[]{
+                vc.getMa(), vc.getTen(), vc.getNgay_bd(), vc.getNgay_kt(), vc.getTien_giam(), vc.getStatus()
+            });
+        }
+    }
+
+    private void sortDataByStartDateAscending() {
+        DefaultTableModel model = (DefaultTableModel) tbVC.getModel(); // Lấy mô hình bảng hiện tại
+        List<VCmodel> sortedList = new ArrayList<>(list); // Sao chép danh sách hiện tại để tránh thay đổi danh sách gốc
+
+        // Sắp xếp danh sách theo ngày bắt đầu sắp tới
+        Collections.sort(sortedList, new Comparator<VCmodel>() {
+            @Override
+            public int compare(VCmodel vc1, VCmodel vc2) {
+                // Đảm bảo rằng cả hai ngày bắt đầu là đối tượng Date và so sánh chúng
+                String startDate1 = vc1.getNgay_bd();
+                String startDate2 = vc2.getNgay_bd();
+                return startDate1.compareTo(startDate2); // So sánh theo chiều tăng dần
+            }
+        });
+
+        // Xóa tất cả các hàng khỏi bảng
+        model.setRowCount(0);
+
+        // Thêm lại dữ liệu đã sắp xếp vào bảng
+        for (VCmodel vc : sortedList) {
+            model.addRow(new Object[]{
+                vc.getMa(), vc.getTen(), vc.getNgay_bd(), vc.getNgay_kt(), vc.getTien_giam(), vc.getStatus()
+            });
+        }
+    }
+
+    private void sortDataByPriceDescending() {
+        DefaultTableModel model = (DefaultTableModel) tbVC.getModel(); // Lấy mô hình bảng hiện tại
+        List<VCmodel> sortedList = new ArrayList<>(list); // Sao chép danh sách hiện tại để tránh thay đổi danh sách gốc
+
+        // Sắp xếp danh sách theo giá tiền giảm dần
+        Collections.sort(sortedList, new Comparator<VCmodel>() {
+            @Override
+            public int compare(VCmodel vc1, VCmodel vc2) {
+                // Đảm bảo rằng cả hai giá tiền là số và so sánh chúng theo chiều giảm dần
+                double price1 = Double.parseDouble(vc1.getTien_giam());
+                double price2 = Double.parseDouble(vc2.getTien_giam());
+                return Double.compare(price2, price1); // So sánh ngược chiều (giảm dần)
+            }
+        });
+
+        // Xóa tất cả các hàng khỏi bảng
+        model.setRowCount(0);
+
+        // Thêm lại dữ liệu đã sắp xếp vào bảng
+        for (VCmodel vc : sortedList) {
+            model.addRow(new Object[]{
+                vc.getMa(), vc.getTen(), vc.getNgay_bd(), vc.getNgay_kt(), vc.getTien_giam(), vc.getStatus()
+            });
+        }
+    }
+
+    private void sortDataByPriceAscending() {
+        DefaultTableModel model = (DefaultTableModel) tbVC.getModel(); // Lấy mô hình bảng hiện tại
+        List<VCmodel> sortedList = new ArrayList<>(list); // Sao chép danh sách hiện tại để tránh thay đổi danh sách gốc
+
+        // Sắp xếp danh sách theo giá tiền tăng dần
+        Collections.sort(sortedList, new Comparator<VCmodel>() {
+            @Override
+            public int compare(VCmodel vc1, VCmodel vc2) {
+                // Đảm bảo rằng cả hai giá tiền là số và so sánh chúng
+                double price1 = Double.parseDouble(vc1.getTien_giam());
+                double price2 = Double.parseDouble(vc2.getTien_giam());
+                return Double.compare(price1, price2);
+            }
+        });
+
+        // Xóa tất cả các hàng khỏi bảng
+        model.setRowCount(0);
+
+        // Thêm lại dữ liệu đã sắp xếp vào bảng
+        for (VCmodel vc : sortedList) {
+            model.addRow(new Object[]{
+                vc.getMa(), vc.getTen(), vc.getNgay_bd(), vc.getNgay_kt(), vc.getTien_giam(), vc.getStatus()
+            });
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ThemBtn;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cbxSort;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     private com.raven.swing.PanelBorder panelBorder1;
+    private javax.swing.JTextField searchBar;
     private javax.swing.JScrollPane spTable;
     private javax.swing.JButton suaBtn;
     private com.raven.swing.Table tbVC;
