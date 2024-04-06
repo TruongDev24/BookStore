@@ -8,14 +8,6 @@ import com.raven.Model2.DangNhap;
 import com.raven.Service.dangNhapService;
 import com.raven.main.Main;
 import java.util.List;
-import javax.mail.PasswordAuthentication;
-import java.util.Properties;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 
 /**
@@ -230,49 +222,6 @@ public class Form_Login extends javax.swing.JFrame {
         String phoneNumber = "123-456-7890"; // Số điện thoại mẫu
         JOptionPane.showMessageDialog(this, "Quản lí: " + phoneNumber, "Thông tin liên hệ",
                 JOptionPane.INFORMATION_MESSAGE);
-        
-        String to = "truongdaik90@gmail.com";
-        String subject = "a";
-        String messageText = "a";
-        String from = "truonglevan496@gmail.com";
-        String password = "zhdhjyankyhptebz";
-
-        // Cài đặt thông số cho server email
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com"); // Đổi lại với SMTP server của bạn
-        props.put("mail.smtp.port", "587"); // Đổi lại với cổng của SMTP server
-        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-
-        // Tạo session để gửi email
-        Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(from, password);
-            }
-        });
-
-        try {
-            // Tạo message
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(to));
-            message.setSubject(subject);
-            message.setText(messageText);
-
-            // Gửi email
-            Transport.send(message);
-
-            JOptionPane.showMessageDialog(this, "Email sent successfully");
-
-        } catch (MessagingException e) {
-            System.out.println(e.getMessage());
-            System.out.println(JOptionPane.ERROR_MESSAGE);
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
     }//GEN-LAST:event_helpMouseClicked
 
     /**
