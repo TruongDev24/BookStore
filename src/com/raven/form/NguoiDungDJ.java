@@ -116,7 +116,7 @@ public class NguoiDungDJ extends javax.swing.JDialog {
             loadImageFromComputer(nd.getHinh_anh());
 
             // Chọn vai trò
-            cbxVaiTro.setSelectedItem(String.valueOf(nd.getId_vaitro()));
+            cbxVaiTro.setSelectedItem(String.valueOf(nd.getVaiTro()));
         } catch (ParseException ex) {
             Logger.getLogger(NguoiDungDJ.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -213,7 +213,7 @@ public class NguoiDungDJ extends javax.swing.JDialog {
 
         jLabel6.setText("Ngày sinh:");
 
-        cbxVaiTro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
+        cbxVaiTro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Staff", " " }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -403,7 +403,7 @@ public class NguoiDungDJ extends javax.swing.JDialog {
             String hinhAnh = lblHinhAnh.getText();
             String gioiTinhString = "";
             int gioiTinh = parseGenderToInt(gioiTinhString);
-            int vaiTro = Integer.parseInt(cbxVaiTro.getSelectedItem().toString());
+            String vaiTro = cbxVaiTro.getSelectedItem().toString();
             nguoiDung newND = new nguoiDung(username,
                     password,
                     tenNV,
@@ -436,7 +436,7 @@ public class NguoiDungDJ extends javax.swing.JDialog {
             String hinhAnh = lblHinhAnh.getText();
             String gioiTinhString = "";
             int gioiTinh = parseGenderToInt(gioiTinhString);
-            int vaiTro = Integer.parseInt(cbxVaiTro.getSelectedItem().toString());
+            String vaiTro = cbxVaiTro.getSelectedItem().toString();
             nguoiDung editedND = new nguoiDung(username,
                     password,
                     tenNV,

@@ -37,7 +37,7 @@ public class NguoiDung_Service {
                         rs.getInt(9), 
                         rs.getString(10), 
                         rs.getString(11), 
-                        rs.getInt(12), 
+                        rs.getString(12), 
                         rs.getString(13));
                 ppp.add(kh);
             }
@@ -48,7 +48,7 @@ public class NguoiDung_Service {
         return null;
     }
     public boolean add(nguoiDung nv) {
-        String sql = "insert into NhanVien(username,password,ten_nv,hinh_anh,email,cccd,ngay_dangki,gioi_tinh,sdt,ngay_sinh,id_vaitro,trang_thai)Values(?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into NhanVien(username,password,ten_nv,hinh_anh,email,cccd,ngay_dangki,gioi_tinh,sdt,ngay_sinh,vai_tro,trang_thai)Values(?,?,?,?,?,?,?,?,?,?,?,?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setObject(1, nv.getUsername());
             ps.setObject(2, nv.getPassword());
@@ -60,7 +60,7 @@ public class NguoiDung_Service {
             ps.setObject(8, nv.getGioi_tinh());
             ps.setObject(9, nv.getSdt());
             ps.setObject(10, nv.getNgay_sinh());
-            ps.setObject(11, nv.getId_vaitro());
+            ps.setObject(11, nv.getVaiTro());
             ps.setObject(12, nv.getTrang_thai());
             ps.executeUpdate();
             return true;
@@ -84,7 +84,7 @@ public class NguoiDung_Service {
     public boolean updateNhanVien(nguoiDung nv) {
         String sql = "UPDATE NhanVien SET username=?,"
                 + " password=?, ten_nv=?, hinh_anh=?, email=?, ngay_dangki=?,"
-                + " gioi_tinh=?, sdt=?, ngay_sinh=?, id_vaitro=?, trang_thai=? WHERE cccd=?";
+                + " gioi_tinh=?, sdt=?, ngay_sinh=?, vai_tro=?, trang_thai=? WHERE cccd=?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setObject(1, nv.getUsername());
             ps.setObject(2, nv.getPassword());
@@ -95,7 +95,7 @@ public class NguoiDung_Service {
             ps.setObject(7, nv.getGioi_tinh());
             ps.setObject(8, nv.getSdt());
             ps.setObject(9, nv.getNgay_sinh());
-            ps.setObject(10, nv.getId_vaitro());
+            ps.setObject(10, nv.getVaiTro());
             ps.setObject(11, nv.getTrang_thai());
             ps.setObject(12, nv.getCccd());
             int updatedRows = ps.executeUpdate();
@@ -125,7 +125,7 @@ public class NguoiDung_Service {
                         rs.getInt(9),
                         rs.getString(10),
                         rs.getString(11),
-                        rs.getInt(12),
+                        rs.getString(12),
                         rs.getString(13));
                 resultList.add(nd);
             }

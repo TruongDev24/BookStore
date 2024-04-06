@@ -20,13 +20,13 @@ public class nguoiDung {
     private int gioi_tinh;
     private String sdt;
     private String ngay_sinh;
-    private int id_vaitro;
+    private String vaiTro;
     private String trang_thai;
 
     public nguoiDung() {
     }
 
-    public nguoiDung(String id, String username, String password, String ten_nv, String hinh_anh, String email, String cccd, String ngay_dangki, int gioi_tinh, String sdt, String ngay_sinh, int id_vaitro, String trang_thai) {
+    public nguoiDung(String id, String username, String password, String ten_nv, String hinh_anh, String email, String cccd, String ngay_dangki, int gioi_tinh, String sdt, String ngay_sinh, String vaiTro, String trang_thai) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -38,10 +38,11 @@ public class nguoiDung {
         this.gioi_tinh = gioi_tinh;
         this.sdt = sdt;
         this.ngay_sinh = ngay_sinh;
-        this.id_vaitro = id_vaitro;
+        this.vaiTro = vaiTro;
         this.trang_thai = trang_thai;
     }
-    public nguoiDung( String username, String password, String ten_nv, String hinh_anh, String email, String cccd, String ngay_dangki, int gioi_tinh, String sdt, String ngay_sinh, int id_vaitro, String trang_thai) {
+
+    public nguoiDung(String username, String password, String ten_nv, String hinh_anh, String email, String cccd, String ngay_dangki, int gioi_tinh, String sdt, String ngay_sinh, String vaiTro, String trang_thai) {
         this.username = username;
         this.password = password;
         this.ten_nv = ten_nv;
@@ -52,7 +53,7 @@ public class nguoiDung {
         this.gioi_tinh = gioi_tinh;
         this.sdt = sdt;
         this.ngay_sinh = ngay_sinh;
-        this.id_vaitro = id_vaitro;
+        this.vaiTro = vaiTro;
         this.trang_thai = trang_thai;
     }
 
@@ -144,12 +145,12 @@ public class nguoiDung {
         this.ngay_sinh = ngay_sinh;
     }
 
-    public int getId_vaitro() {
-        return id_vaitro;
+    public String getVaiTro() {
+        return vaiTro;
     }
 
-    public void setId_vaitro(int id_vaitro) {
-        this.id_vaitro = id_vaitro;
+    public void setVaiTro(String vaiTro) {
+        this.vaiTro = vaiTro;
     }
 
     public String getTrang_thai() {
@@ -162,7 +163,23 @@ public class nguoiDung {
 
     @Override
     public String toString() {
-        return "nguoiDung{" + "id=" + id + ", username=" + username + ", password=" + password + ", ten_nv=" + ten_nv + ", hinh_anh=" + hinh_anh + ", email=" + email + ", cccd=" + cccd + ", ngay_dangki=" + ngay_dangki + ", gioi_tinh=" + gioi_tinh + ", sdt=" + sdt + ", ngay_sinh=" + ngay_sinh + ", id_vaitro=" + id_vaitro + ", trang_thai=" + trang_thai + '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("nguoiDung{");
+        sb.append("id=").append(id);
+        sb.append(", username=").append(username);
+        sb.append(", password=").append(password);
+        sb.append(", ten_nv=").append(ten_nv);
+        sb.append(", hinh_anh=").append(hinh_anh);
+        sb.append(", email=").append(email);
+        sb.append(", cccd=").append(cccd);
+        sb.append(", ngay_dangki=").append(ngay_dangki);
+        sb.append(", gioi_tinh=").append(gioi_tinh);
+        sb.append(", sdt=").append(sdt);
+        sb.append(", ngay_sinh=").append(ngay_sinh);
+        sb.append(", vaiTro=").append(vaiTro);
+        sb.append(", trang_thai=").append(trang_thai);
+        sb.append('}');
+        return sb.toString();
     }
     
 }

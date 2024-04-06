@@ -62,12 +62,10 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
                 gioiTinh = "Nữ";
             }
             String vaitro = "";
-            if (s.getId_vaitro() == 1) {
-                vaitro = "Quản lý";
-            } else if (s.getId_vaitro() == 2) {
-                vaitro = "Nhân viên bán hàng";
-            } else if (s.getId_vaitro() == 3) {
-                vaitro = "Kế toán";
+            if (s.getVaiTro().equals("Admin")) {
+                vaitro = "Admin";
+            } else if (s.getVaiTro().equals("Staff")) {
+                vaitro = "Staff";
             }
             dtm.addRow(new Object[]{
                 s.getCccd(),
@@ -287,28 +285,20 @@ public class Form_QLNguoiDung extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        int selectedRow = table.getSelectedRow(); // Lấy chỉ số hàng đã chọn trong bảng
+        int selectedRow = table.getSelectedRow();
         if (selectedRow == -1) {
-            // Nếu không có hàng nào được chọn, hiển thị thông báo và kết thúc phương thức
             JOptionPane.showMessageDialog(null, "Vui lòng chọn người dùng cần xóa.");
             return;
         }
-
-        // Hiển thị hộp thoại xác nhận xóa
         int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa người dùng này?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
-            // Lấy giá trị của cột "cccd" trong hàng đã chọn
             String cccdToDelete = table.getValueAt(selectedRow, 0).toString();
-
-            // Gọi phương thức xóa người dùng từ Service
             boolean success = nvService.delete(cccdToDelete);
             if (success) {
-                // Nếu xóa thành công, cập nhật lại bảng hiển thị dữ liệu
                 listNV = nvService.getAll_NV();
                 ShowData(listNV);
                 JOptionPane.showMessageDialog(null, "Đã xóa người dùng thành công.");
             } else {
-                // Nếu xóa không thành công, hiển thị thông báo lỗi
                 JOptionPane.showMessageDialog(null, "Xóa người dùng không thành công. Vui lòng thử lại.");
             }
         }

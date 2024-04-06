@@ -36,12 +36,12 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
 
     private DefaultTableModel dtm = new DefaultTableModel();
     private List<khachHang> listKH = new ArrayList<>();
-    private final khachHang_Service nvService = new khachHang_Service();
+    private final khachHang_Service khService = new khachHang_Service();
 
     public Form_QLKhachHang() {
         initComponents();
         dtm = (DefaultTableModel) table.getModel();
-        listKH = nvService.getAll_KH();
+        listKH = khService.getAll_KH();
         ShowData(listKH);
     }
 
@@ -247,89 +247,10 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        // Tạo một dialog để nhập dữ liệu mới
-        JDialog dialog = new JDialog();
-        dialog.setTitle("Thêm mới khách hàng");
-
-        // Tạo các trường dữ liệu
-        JTextField txtTenKH = new JTextField();
-        JTextField txtSDT = new JTextField();
-        JTextField txtNgayThem = new JTextField();
-        JRadioButton rdoNam = new JRadioButton("Nam");
-        JRadioButton rdoNu = new JRadioButton("Nữ");
-        JComboBox<String> cbxTrangThai = new JComboBox<>(new String[]{"Active", "Inactive"});
-        JTextField txtID = new JTextField();
-        JButton btnSubmit = new JButton("Submit");
-
-        // Thiết lập layout cho dialog
-        dialog.setLayout(new GridLayout(7, 2));
-
-        // Thêm các trường dữ liệu và nút vào dialog
-        dialog.add(new JLabel("Tên khách hàng:"));
-        dialog.add(txtTenKH);
-        dialog.add(new JLabel("Số điện thoại:"));
-        dialog.add(txtSDT);
-        dialog.add(new JLabel("Ngày thêm:"));
-        dialog.add(txtNgayThem);
-        dialog.add(new JLabel("Giới tính:"));
-        ButtonGroup group = new ButtonGroup();
-        group.add(rdoNam);
-        group.add(rdoNu);
-        JPanel panelGioiTinh = new JPanel();
-        panelGioiTinh.add(rdoNam);
-        panelGioiTinh.add(rdoNu);
-        dialog.add(panelGioiTinh);
-        dialog.add(new JLabel("Trạng thái:"));
-        dialog.add(cbxTrangThai);
-        dialog.add(btnSubmit);
-
-        // Xử lý sự kiện khi nút "Submit" được nhấn
-        btnSubmit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lấy thông tin từ các trường dữ liệu
-                String tenKH = txtTenKH.getText().trim();
-                String sdt = txtSDT.getText().trim();
-                String ngayThem = txtNgayThem.getText().trim();
-                int gioiTinh = rdoNam.isSelected() ? 0 : 1;
-                String trangThai = cbxTrangThai.getSelectedItem().toString();
-
-                // Kiểm tra tính hợp lệ của dữ liệu
-                if (tenKH.isEmpty() || sdt.isEmpty() || ngayThem.isEmpty()) {
-                    JOptionPane.showMessageDialog(dialog, "Vui lòng nhập đầy đủ thông tin.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                if (!sdt.matches("\\d{10}")) {
-                    JOptionPane.showMessageDialog(dialog, "Số điện thoại không hợp lệ. Vui lòng nhập lại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                // Kiểm tra ngày thêm có đúng định dạng không (ví dụ: yyyy-mm-dd)
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                dateFormat.setLenient(false);
-                try {
-                    dateFormat.parse(ngayThem);
-                } catch (ParseException ex) {
-                    JOptionPane.showMessageDialog(dialog, "Ngày thêm không hợp lệ. Vui lòng nhập lại theo định dạng yyyy-MM-dd.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                // Tạo đối tượng khách hàng mới
-                khachHang khachHangMoi = new khachHang(null, tenKH, sdt, ngayThem, gioiTinh, trangThai);
-
-                // Thêm khách hàng mới vào danh sách và cập nhật bảng
-                nvService.add(khachHangMoi);
-                listKH.add(khachHangMoi);
-
-                // Đóng dialog sau khi thêm thành công
-                dialog.dispose();
-                ShowData(listKH);
-            }
-        });
-
-        // Thiết lập kích thước và hiển thị dialog
-        dialog.setSize(300, 250);
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
+        KhachHangDJ ct = new KhachHangDJ(null, true, KhachHangDJ.ActionType.ADD);
+        ct.setVisible(true);
+        listKH = khService.getAll_KH();
+        ShowData(listKH);
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
@@ -356,115 +277,15 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
     }//GEN-LAST:event_tableMouseClicked
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        int selectedIndex = table.getSelectedRow();
-        if (selectedIndex != -1) {
-            // Lấy thông tin của khách hàng từ dòng được chọn
-            String id = table.getValueAt(selectedIndex, 0).toString();
-            String tenKH = table.getValueAt(selectedIndex, 1).toString();
-            String gioiTinh = table.getValueAt(selectedIndex, 2).toString();
-            String sdt = table.getValueAt(selectedIndex, 3).toString();
-            String ngayThem = table.getValueAt(selectedIndex, 4).toString();
-            String trangThai = table.getValueAt(selectedIndex, 5).toString();
-
-            // Tạo dialog sửa và hiển thị thông tin của khách hàng
-            JDialog dialog = new JDialog();
-            dialog.setTitle("Sửa thông tin khách hàng");
-
-            // Tạo các trường dữ liệu
-            JTextField txtTenKH = new JTextField(tenKH);
-            JTextField txtSDT = new JTextField(sdt);
-            JTextField txtNgayThem = new JTextField(ngayThem);
-            JRadioButton rdoNam = new JRadioButton("Nam");
-            JRadioButton rdoNu = new JRadioButton("Nữ");
-            if (gioiTinh.equalsIgnoreCase("Nam")) {
-                rdoNam.setSelected(true);
-            } else {
-                rdoNu.setSelected(true);
-            }
-            JComboBox<String> cbxTrangThai = new JComboBox<>(new String[]{"Active", "Inactive"});
-            cbxTrangThai.setSelectedItem(trangThai);
-
-            JTextField txtID = new JTextField(id);
-            txtID.setEditable(false); // Không cho phép chỉnh sửa ID
-
-            // Thiết lập layout cho dialog
-            dialog.setLayout(new GridLayout(7, 2));
-
-            // Thêm các trường dữ liệu và nút vào dialog
-            dialog.add(new JLabel("ID:"));
-            dialog.add(txtID);
-            dialog.add(new JLabel("Tên khách hàng:"));
-            dialog.add(txtTenKH);
-            dialog.add(new JLabel("Số điện thoại:"));
-            dialog.add(txtSDT);
-            dialog.add(new JLabel("Ngày thêm:"));
-            dialog.add(txtNgayThem);
-            dialog.add(new JLabel("Giới tính:"));
-            ButtonGroup group = new ButtonGroup();
-            group.add(rdoNam);
-            group.add(rdoNu);
-            JPanel panelGioiTinh = new JPanel();
-            panelGioiTinh.add(rdoNam);
-            panelGioiTinh.add(rdoNu);
-            dialog.add(panelGioiTinh);
-            dialog.add(new JLabel("Trạng thái:"));
-            dialog.add(cbxTrangThai);
-
-            JButton btnSubmit = new JButton("Submit");
-            dialog.add(btnSubmit);
-
-            // Xử lý sự kiện khi nút "Submit" được nhấn
-            btnSubmit.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // Lấy thông tin được chỉnh sửa từ các trường dữ liệu
-                    String tenKH = txtTenKH.getText().trim();
-                    String sdt = txtSDT.getText().trim();
-                    String ngayThem = txtNgayThem.getText().trim();
-                    int gioiTinh = rdoNam.isSelected() ? 0 : 1;
-                    String trangThai = cbxTrangThai.getSelectedItem().toString();
-
-                    // Kiểm tra tính hợp lệ của dữ liệu (giống như trong phần thêm mới)
-                    if (tenKH.isEmpty() || sdt.isEmpty() || ngayThem.isEmpty()) {
-                        JOptionPane.showMessageDialog(dialog, "Vui lòng nhập đầy đủ thông tin.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    if (!sdt.matches("\\d{10}")) {
-                        JOptionPane.showMessageDialog(dialog, "Số điện thoại không hợp lệ. Vui lòng nhập lại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    // Kiểm tra ngày thêm có đúng định dạng không (ví dụ: dd/MM/yyyy)
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-                    dateFormat.setLenient(false);
-                    try {
-                        dateFormat.parse(ngayThem);
-                    } catch (ParseException ex) {
-                        JOptionPane.showMessageDialog(dialog, "Ngày thêm không hợp lệ. Vui lòng nhập lại theo định dạng yyyy-mm-dd.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    // Tạo đối tượng khách hàng mới
-                    khachHang khachHangMoi = new khachHang(id, tenKH, sdt, ngayThem, gioiTinh, trangThai);
-
-                    // Cập nhật thông tin của khách hàng
-                    nvService.update(khachHangMoi);
-
-                    // Cập nhật lại dữ liệu trên bảng
-                    listKH.set(selectedIndex, khachHangMoi);
-                    ShowData(listKH);
-
-                    // Đóng dialog sau khi sửa thành công
-                    dialog.dispose();
-                }
-            });
-
-            // Thiết lập kích thước và hiển thị dialog
-            dialog.setSize(300, 250);
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng để sửa.");
+        int row = table.getSelectedRow();
+        if (row == -1) {
+            return;
         }
+        KhachHangDJ ct = new KhachHangDJ(null, true, KhachHangDJ.ActionType.EDIT);
+        ct.detail(row);
+        ct.setVisible(true);
+        listKH = khService.getAll_KH();
+        ShowData(listKH);
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
@@ -476,11 +297,11 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
 
             if (confirm == JOptionPane.YES_OPTION) {
                 // Set trạng thái của nhân viên thành "Đã nghỉ"
-                boolean updateStatus = nvService.updateStatus(idNhanVien, "Inactive");
+                boolean updateStatus = khService.updateStatus(idNhanVien, "Inactive");
 
                 if (updateStatus) {
                     JOptionPane.showMessageDialog(this, "Xóa thành công. Khách hàng đã chuyển sang trạng thái 'Inactive'.");
-                    listKH = nvService.getAll_KH();
+                    listKH = khService.getAll_KH();
                     ShowData(listKH);
                 } else {
                     JOptionPane.showMessageDialog(this, "Xóa thất bại.");
@@ -520,7 +341,7 @@ public class Form_QLKhachHang extends javax.swing.JPanel {
                 break;
         }
         if (!keyword.isEmpty()) {
-            filteredAndSearchedData = nvService.timKiemKhachHang(keyword);
+            filteredAndSearchedData = khService.timKiemKhachHang(keyword);
         }
         ShowData(filteredAndSearchedData);
     }
