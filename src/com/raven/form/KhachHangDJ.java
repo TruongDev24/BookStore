@@ -134,6 +134,7 @@ public class KhachHangDJ extends javax.swing.JDialog {
         jLabel6.setText("Trạng thái:");
 
         buttonGroup1.add(rdo1);
+        rdo1.setSelected(true);
         rdo1.setText("Nam");
 
         buttonGroup1.add(rdo2);

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="enabled" type="boolean" value="false"/>
   </Properties>
@@ -755,11 +759,18 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="rdoTienMat">
           <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="buttonGroup1"/>
+            </Property>
+            <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Ti&#x1ec1;n m&#x1eb7;t"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="rdoChuyenKhoan">
           <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="buttonGroup1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Chuy&#x1ec3;n kho&#x1ea3;n"/>
           </Properties>
         </Component>

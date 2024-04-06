@@ -197,6 +197,7 @@ public class NguoiDungDJ extends javax.swing.JDialog {
         jLabel11.setText("Trạnh thái:");
 
         buttonGroup1.add(rdo1);
+        rdo1.setSelected(true);
         rdo1.setText("Nam");
 
         buttonGroup1.add(rdo2);

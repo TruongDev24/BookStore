@@ -55,6 +55,7 @@ public class Form_BanHang extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHoaDon = new javax.swing.JTable();
@@ -401,8 +402,11 @@ public class Form_BanHang extends javax.swing.JPanel {
         jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel17.setText("Phương thức thanh toán");
 
+        buttonGroup1.add(rdoTienMat);
+        rdoTienMat.setSelected(true);
         rdoTienMat.setText("Tiền mặt");
 
+        buttonGroup1.add(rdoChuyenKhoan);
         rdoChuyenKhoan.setText("Chuyển khoản");
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -603,6 +607,7 @@ public class Form_BanHang extends javax.swing.JPanel {
     private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton btnXoaSPHDCT;
     private javax.swing.JButton btnXoaTatCaSP;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
