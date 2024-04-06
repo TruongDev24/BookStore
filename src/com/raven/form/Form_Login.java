@@ -203,9 +203,11 @@ public class Form_Login extends javax.swing.JFrame {
             if (!user.equals(dn.getUser())) {
                 txtTB1.setText("Sai username!");
                 System.out.println(dn.getUser());
-            } else if (!pw.equals(dn.getPass())) {
+            }
+            if (!pw.equals(dn.getPass())) {
                 txtTB2.setText("Sai password!");
-            } else if (user.equals(dn.getUser()) && pw.equals(dn.getPass())) {
+            }
+            if (user.equals(dn.getUser()) && pw.equals(dn.getPass())) {
                 txtTB1.setText(null);
                 txtTB2.setText(null);
                 JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
