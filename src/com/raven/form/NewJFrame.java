@@ -55,7 +55,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pgbLoad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 877, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -81,7 +81,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void init() {
         this.setLocationRelativeTo(null);
-        new Timer(18, new ActionListener() {
+        new Timer(5, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int value = pgbLoad.getValue();

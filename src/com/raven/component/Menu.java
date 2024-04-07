@@ -64,7 +64,7 @@ public class Menu extends javax.swing.JPanel {
 
         panelMoving.setOpaque(false);
 
-        jLabel1.setFont(new java.awt.Font("Elephant", 1, 16)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Bodoni MT Black", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/fpt.png"))); // NOI18N
