@@ -6,8 +6,7 @@ package com.raven.Service;
 
 import com.raven.dbConnect.DBConnect;
 import com.raven.model.HDCTTable;
-import com.raven.model.HoaDon;
-import com.raven.model.HoaDonTable;
+import com.raven.Model2.HoaDonTable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.sql.Connection;
@@ -22,9 +21,6 @@ import java.util.List;
  */
 public class HoaDonRepository implements InterfaceHoaDonRepo {
 
-    final String INSERT_HD_SQL = "INSERT INTO HoaDon VALUES (?,?,?,?,?,?,?,?,?,?)";
-    final String SELECT_HD_SQL = "SELECT * FROM HoaDon";
-
     @Override
     public List<HoaDonTable> getAll() {
         List<HoaDonTable> listHoaDon = new ArrayList<>();
@@ -34,6 +30,7 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
                 + " HoaDon.ngay_tao,\n"
                 + " HoaDon.ghi_chu,\n"
                 + " HoaDon.tong_tien,\n"
+                + " HoaDon.id_khuyenmai,\n"
                 + " HoaDon.id_voucher,\n"
                 + " HoaDon.thanh_toan,\n"
                 + " HoaDon.trang_thai\n"
@@ -43,7 +40,7 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
         try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                HoaDonTable hd = new HoaDonTable(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getString(5), rs.getDouble(6), rs.getInt(7), rs.getInt(8), rs.getString(9));
+                HoaDonTable hd = new HoaDonTable(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getString(5), rs.getDouble(6), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getString(9));
                 listHoaDon.add(hd);
             }
         } catch (Exception e) {
@@ -61,7 +58,7 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
                 + ", Sach.ten_sach\n"
                 + ", ChiTietHoaDon.so_luong\n"
                 + ", ChiTietSach.gia_ban\n"
-                + ", ChiTietHoaDon.don_gia\n"
+                //                + ", ChiTietHoaDon.don_gia\n"
                 + "FROM     ChiTietHoaDon INNER JOIN\n"
                 + "                  HoaDon ON ChiTietHoaDon.id_hoadon = HoaDon.id INNER JOIN\n"
                 + "                  ChiTietSach ON ChiTietHoaDon.id_sachct = ChiTietSach.id INNER JOIN\n"
@@ -69,7 +66,7 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
         try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                HDCTTable hdctTB = new HDCTTable(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getBigDecimal(6), rs.getDouble(7));
+                HDCTTable hdctTB = new HDCTTable(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getDouble(6));
                 listHoaDonChiTiet.add(hdctTB);
             }
         } catch (Exception e) {
@@ -87,6 +84,7 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
                 + " HoaDon.ngay_tao,\n"
                 + " HoaDon.ghi_chu,\n"
                 + " HoaDon.tong_tien,\n"
+                + " HoaDon.id_khuyenmai,\n"
                 + " HoaDon.id_voucher,\n"
                 + " HoaDon.thanh_toan,\n"
                 + " HoaDon.trang_thai\n"
@@ -96,7 +94,7 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
         try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                HoaDonTable hd = new HoaDonTable(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getString(5), rs.getDouble(6), rs.getInt(7), rs.getInt(8), rs.getString(9));
+                HoaDonTable hd = new HoaDonTable(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getString(5), rs.getDouble(6), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getString(10));
                 listHD.add(hd);
             }
         } catch (Exception e) {
@@ -151,22 +149,39 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
     }
 
     @Override
-    public void addHoaDon(int idNhanVien, int idKH, BigDecimal tongTien, int idVoucher, int PTTT) {
+    public String getTenNhanVien(int idNV) {
+        String ten = "";
+        String sql = "SELECT ten_nv FROM NhanVien WHERE id = " + idNV + " ";
+        try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ten = rs.getString(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ten;
+    }
+
+    @Override
+    public void addHoaDon(int idNV, int idKH, BigDecimal tongTien, int idVoucher, int PTTT) {
         String sql = "INSERT INTO HoaDon\n"
                 + "(id_tk,\n"
                 + "id_khach,\n"
                 + "ngay_tao,\n"
                 + "ghi_chu,\n"
                 + "tong_tien,\n"
+                + "id_khuyenmai,\n"
                 + "id_voucher,\n"
                 + "thanh_toan,\n"
                 + "trang_thai)\n"
                 + "VALUES\n"
-                + "(" + idNhanVien + "\n"
+                + "(" + idNV + "\n"
                 + "," + idKH + "\n"
                 + ",GETDATE()"
                 + ",NULL\n"
                 + "," + tongTien + "\n"
+                + ",NULL\n"
                 + "," + idVoucher + "\n"
                 + "," + PTTT + "\n"
                 + ",N'Chưa TT')";
@@ -188,18 +203,18 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
     }
 
     @Override
-    public void addSPHDCT(int idHD, int idCTSP, int soLuong, double donGia) {
+    public void addSPHDCT(int idHD, int idCTSP, int soLuong) {
         String sql = "INSERT INTO ChiTietHoaDon\n"
                 + "(id_hoadon,\n"
                 + "id_sachct,\n"
                 + "so_luong,\n"
-                + "don_gia,\n"
+                //                + "don_gia,\n"
                 + "trang_thai) \n"
                 + "VALUES\n"
                 + "(" + idHD + "\n"
                 + "," + idCTSP + "\n"
                 + "," + soLuong + "\n"
-                + "," + donGia + "\n"
+                //                + "," + donGia + "\n"
                 + ",'Hoat Dong')";
         try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareCall(sql)) {
             ps.executeUpdate();
@@ -246,7 +261,7 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
                 + ", thanh_toan = " + PTTT + " "
                 + ", trang_thai = N'Đã TT'\n"
                 + "WHERE id = " + idHD + " ";
-        try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareCall(sql)){
+        try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareCall(sql)) {
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -269,8 +284,8 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
     }
 
     @Override
-    public void updateGiaSPHDCT(double giaUpdate, int idCTSP, int idHD) {
-        String sql = "UPDATE ChiTietHoaDon SET don_gia = " + giaUpdate + " WHERE id_sachct = " + idCTSP + " AND id_hoadon = " + idHD + " ";
+    public void updateGiaSPHDCT(int soLuong, int idCTSP, int idHD) {
+        String sql = "UPDATE ChiTietHoaDon SET so_luong = " + soLuong + " WHERE id_sachct = " + idCTSP + " AND id_hoadon = " + idHD + " ";
         try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareCall(sql)) {
             ps.executeUpdate();
         } catch (Exception e) {
@@ -301,6 +316,57 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void xoaAllSPHDCT(int idHD) {
+        String sql = "DELETE FROM ChiTietHoaDon WHERE id_hoadon = " + idHD + " ";
+        try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareCall(sql)) {
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public int getIDKhachHang(String sdt) {
+        int id = 0;
+        String sql = "SELECT id FROM KhachHang WHERE sdt = '" + sdt + "' ";
+        try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    @Override
+    public List<HoaDonTable> getAllFromHD() {
+        List<HoaDonTable> listHD = new ArrayList<>();
+        String sql = "SELECT HoaDon.id,\n"
+                + " KhachHang.ten_khach,\n"
+                + " NhanVien.ten_nv,\n"
+                + " HoaDon.ngay_tao,\n"
+                + " HoaDon.tong_tien,\n"
+                + " HoaDon.thanh_toan,\n"
+                + " HoaDon.trang_thai\n"
+                + "FROM     HoaDon INNER JOIN\n"
+                + "                  KhachHang ON HoaDon.id_khach = KhachHang.id INNER JOIN\n"
+                + "                  NhanVien ON HoaDon.id_tk = NhanVien.id WHERE HoaDon.trang_thai = N'Đã TT'";
+        try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                HoaDonTable hd = new HoaDonTable(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDouble(5), rs.getInt(6), rs.getString(7));
+                listHD.add(hd);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listHD;
+
     }
 
 }
