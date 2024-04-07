@@ -564,11 +564,11 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="lblTenKhachHang" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="44" max="32767" attributes="0"/>
                       <Component id="btnKhachHang" min="-2" pref="34" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                   </Group>
@@ -617,11 +617,6 @@
                 <Property name="text" type="java.lang.String" value="S&#x1ed1; &#x110;i&#x1ec7;n Tho&#x1ea1;i:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblTenKhachHang">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Kh&#xe1;ch L&#x1ebb;"/>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JLabel" name="lblSDTKhachHang">
               <Properties>
                 <Property name="text" type="java.lang.String" value="null"/>
@@ -636,6 +631,11 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnKhachHangActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblTenKhachHang">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel5"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

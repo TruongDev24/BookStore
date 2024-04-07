@@ -6,8 +6,7 @@ package com.raven.Service;
 
 import com.raven.dbConnect.DBConnect;
 import com.raven.model.HDCTTable;
-import com.raven.model.HoaDon;
-import com.raven.model.HoaDonTable;
+import com.raven.Model2.HoaDonTable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.sql.Connection;
@@ -148,7 +147,7 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
         }
         return id;
     }
-    
+
     @Override
     public String getTenNhanVien(int idNV) {
         String ten = "";
@@ -342,6 +341,32 @@ public class HoaDonRepository implements InterfaceHoaDonRepo {
             e.printStackTrace();
         }
         return id;
+    }
+
+    @Override
+    public List<HoaDonTable> getAllFromHD() {
+        List<HoaDonTable> listHD = new ArrayList<>();
+        String sql = "SELECT HoaDon.id,\n"
+                + " KhachHang.ten_khach,\n"
+                + " NhanVien.ten_nv,\n"
+                + " HoaDon.ngay_tao,\n"
+                + " HoaDon.tong_tien,\n"
+                + " HoaDon.thanh_toan,\n"
+                + " HoaDon.trang_thai\n"
+                + "FROM     HoaDon INNER JOIN\n"
+                + "                  KhachHang ON HoaDon.id_khach = KhachHang.id INNER JOIN\n"
+                + "                  NhanVien ON HoaDon.id_tk = NhanVien.id WHERE HoaDon.trang_thai = N'Đã TT'";
+        try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                HoaDonTable hd = new HoaDonTable(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDouble(5), rs.getInt(6), rs.getString(7));
+                listHD.add(hd);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listHD;
+
     }
 
 }

@@ -5,6 +5,12 @@
  */
 package com.raven.form;
 
+import com.raven.Model2.HoaDonTable;
+import com.raven.Service.HoaDonRepository;
+import com.raven.Service.InterfaceHoaDonRepo;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author RAVEN
@@ -14,10 +20,32 @@ public class Form_QLHoaDon extends javax.swing.JPanel {
     /**
      * Creates new form Form_1
      */
+    
+    InterfaceHoaDonRepo service = new HoaDonRepository();
+    DefaultTableModel model = new DefaultTableModel();
+    
     public Form_QLHoaDon() {
         initComponents();
+        loadHD(service.getAllFromHD());
     }
 
+    
+    
+    private void loadHD(List<HoaDonTable> lst) {
+        model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        for (HoaDonTable hdT : lst) {
+            model.addRow(new Object[]{
+                hdT.getIdHoaDon(),
+                hdT.getTenNhanVien(),
+                hdT.getTenKhachHang(),
+                hdT.getNgayTao(),
+                hdT.getTongTien(),
+                hdT.getPTTT(),
+                hdT.getTrangThai()
+            });
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,11 +87,11 @@ public class Form_QLHoaDon extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã đơn hàng", "Tên khách", "Nhân viên", "Tiền giảm", "Tổng tiền", "Ngày tạo"
+                "Mã đơn hàng", "Khách Hàng", "Nhân Viên", "Ngày Tạo", "Tổng Tiền", "Phương Thức", "Trạng Thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

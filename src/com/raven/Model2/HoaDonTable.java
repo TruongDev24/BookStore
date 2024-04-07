@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.raven.model;
+package com.raven.Model2;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,6 +12,7 @@ import java.util.Date;
  * @author gosgu
  */
 public class HoaDonTable {
+
     private Integer idHoaDon;
     private Integer idKhachHang;
     private String tenKhachHang;
@@ -36,6 +37,16 @@ public class HoaDonTable {
         this.tongTien = tongTien;
         this.idKhuyenMai = idKhuyenMai;
         this.idVoucher = idVoucher;
+        this.ptThanhToan = ptThanhToan;
+        this.trangThai = trangThai;
+    }
+
+    public HoaDonTable(Integer idHoaDon, String tenKhachHang, String tenNhanVien, Date ngayTao, double tongTien, int ptThanhToan, String trangThai) {
+        this.idHoaDon = idHoaDon;
+        this.tenKhachHang = tenKhachHang;
+        this.tenNhanVien = tenNhanVien;
+        this.ngayTao = ngayTao;
+        this.tongTien = tongTien;
         this.ptThanhToan = ptThanhToan;
         this.trangThai = trangThai;
     }

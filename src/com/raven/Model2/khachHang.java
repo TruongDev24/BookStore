@@ -9,6 +9,7 @@ package com.raven.Model2;
  * @author PC
  */
 public class khachHang {
+
     String id;
     String ten_khach;
     String sdt;
@@ -27,12 +28,19 @@ public class khachHang {
         this.gioi_tinh = gioi_tinh;
         this.trang_thai = trang_thai;
     }
+
     public khachHang(String ten_khach, String sdt, String ngay_them, int gioi_tinh, String trang_thai) {
         this.ten_khach = ten_khach;
         this.sdt = sdt;
         this.ngay_them = ngay_them;
         this.gioi_tinh = gioi_tinh;
         this.trang_thai = trang_thai;
+    }
+
+    public khachHang(String id, String ten_khach, String sdt) {
+        this.id = id;
+        this.ten_khach = ten_khach;
+        this.sdt = sdt;
     }
 
     public String getId() {
@@ -85,7 +93,7 @@ public class khachHang {
 
     @Override
     public String toString() {
-        return "khachHang{" + "id=" + id + ", ten_khach=" + ten_khach + ", sdt=" + sdt + ", ngay_them=" + ngay_them + ", gioi_tinh=" + gioi_tinh + ", trang_thai=" + trang_thai + '}';
+        return ten_khach;
     }
-    
+
 }

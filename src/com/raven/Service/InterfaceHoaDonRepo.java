@@ -6,7 +6,8 @@ package com.raven.Service;
 
 import com.raven.model.HDCTTable;
 import com.raven.model.HoaDon;
-import com.raven.model.HoaDonTable;
+//import com.raven.model.HoaDonTable;
+import com.raven.Model2.HoaDonTable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,8 @@ public interface InterfaceHoaDonRepo {
     List<HDCTTable> getAllCTHD(int idHD);
 
     List<HoaDonTable> getAllHDChuaHT();
+    
+    List<HoaDonTable> getAllFromHD();
 
     int getIDHD(int idHD);
 

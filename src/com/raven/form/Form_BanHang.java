@@ -10,10 +10,13 @@ import com.raven.Service.InterfaceHoaDonRepo;
 import com.raven.Service.InterfaceSanPhamRepo;
 import com.raven.Service.SanPhamRepository;
 import com.raven.model.HDCTTable;
-import com.raven.model.HoaDonTable;
+import com.raven.Model2.HoaDonTable;
 import com.raven.Model2.SanPham;
+import com.raven.Model2.khachHang;
+import com.raven.Service.khachHang_Service;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.JOptionPane;
@@ -34,6 +37,7 @@ public class Form_BanHang extends javax.swing.JPanel {
     DefaultTableModel model = new DefaultTableModel();
     int i = -1;
     String tenNV, username;
+    private khachHang_Service khservice = new khachHang_Service();
 
     public Form_BanHang() {
         initComponents();
@@ -41,6 +45,7 @@ public class Form_BanHang extends javax.swing.JPanel {
 //        this.username = username;
 //        this.setLocationRelativeTo(null);
 //        lblTenKhachHang.setText("Khách Lẻ");
+//        loadKH(khservice.getAll_KH());
         this.loadTableSP(serviceSP.timKiemSP(txtTimKiemSanPham.getText()));
         this.loadTableHD(serviceHD.getAllHDChuaHT());
         lblTenNhanVien.setText(serviceHD.getTenNhanVien(1));
@@ -78,9 +83,9 @@ public class Form_BanHang extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        lblTenKhachHang = new javax.swing.JLabel();
         lblSDTKhachHang = new javax.swing.JLabel();
         btnKhachHang = new javax.swing.JButton();
+        lblTenKhachHang = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         lblMaHoaDon = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -305,8 +310,6 @@ public class Form_BanHang extends javax.swing.JPanel {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Số Điện Thoại:");
 
-        lblTenKhachHang.setText("Khách Lẻ");
-
         lblSDTKhachHang.setText("null");
 
         btnKhachHang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/Add.png"))); // NOI18N
@@ -315,6 +318,8 @@ public class Form_BanHang extends javax.swing.JPanel {
                 btnKhachHangActionPerformed(evt);
             }
         });
+
+        lblTenKhachHang.setText("jLabel5");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -329,9 +334,9 @@ public class Form_BanHang extends javax.swing.JPanel {
                         .addComponent(lblSDTKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblTenKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(btnKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
         );
@@ -583,7 +588,8 @@ public class Form_BanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_btnXoaSPHDCTActionPerformed
 
     private void btnKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKhachHangActionPerformed
-
+        KhachHangDJ ct = new KhachHangDJ(null, true, KhachHangDJ.ActionType.ADD);
+        ct.setVisible(true);
     }//GEN-LAST:event_btnKhachHangActionPerformed
 
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
@@ -718,6 +724,16 @@ public class Form_BanHang extends javax.swing.JPanel {
 
     }
 
+//    private void loadKH(List<khachHang> lst) {
+//        cbbKhachHang.removeAllItems();
+//        List<khachHang> lstkh = khservice.getAll_KH();
+//        for (khachHang hang : lst) {
+//            cbbKhachHang.addItem(hang);
+//            lblSDTKhachHang.setText(hang.getSdt());
+//        }
+//
+//    }
+
     //Show Tổng Tiền
     private void showTongTien() {
         i = tblHoaDon.getSelectedRow();
@@ -809,7 +825,8 @@ public class Form_BanHang extends javax.swing.JPanel {
 //            } else{
 //                    
 //                    }
-            serviceHD.addHoaDon(1, 1, BigDecimal.ZERO, 1, getPTTT());
+            khachHang kh = new khachHang();
+            serviceHD.addHoaDon(1, Integer.valueOf(kh.getId()), BigDecimal.ZERO, 1, getPTTT());
             this.loadTableHD(serviceHD.getAllHDChuaHT());
         } catch (Exception e) {
             e.printStackTrace();
