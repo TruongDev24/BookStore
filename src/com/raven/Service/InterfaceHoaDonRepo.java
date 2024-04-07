@@ -23,41 +23,35 @@ public interface InterfaceHoaDonRepo {
 
     List<HoaDonTable> getAllHDChuaHT();
 
-    // get id hóa đơn thông qua mã hóa đơn 
     int getIDHD(int idHD);
 
-    // Lấy ID hóa đơn chi tiết thông qua mã hóa đơn chi tiết 
     int getID_CTSP(int idHDCT);
 
-    // lấy ra ID nhân viên  thông qua email 
     int getIDNhanVien(String username);
+    
+    public String getTenNhanVien(int idNV);
+    
+    int getIDKhachHang(String sdt);
 
-    // Tạo hóa đơn chờ 
-    void addHoaDon(int idNhanVien, int idKH, BigDecimal tongTien, int idVoucher,int PTTT);
+    void addHoaDon(int idNV, int idKH, BigDecimal tongTien, int idVoucher,int PTTT);
 
-    // Hủy hóa đơn 
     void removeHoaDon(int idHD);
 
-    // Tạo ra hóa đơn chi tiết
-    void addSPHDCT(int idHD, int idCTSP, int soLuong, double donGia);
+    void addSPHDCT(int idHD, int idCTSP, int soLuong);
 
-    // sửa số lượng sản phẩm hóa đơn chi tiết ( tăng )
     void updateSLSPHDCT(int idHDCT, int soLuong);
 
-    // set số lượng trong hóa đơn chờ 
     void setSLHDCT(int idHDCT, int soLuong);
 
-    // Xóa sản phẩm trong hóa đơn chờ 
     void xoa1SPHDCT(int idHDCT);
+    
+    void xoaAllSPHDCT(int idHD);
 
-    // Thanh toán hóa đơn 
     void thanhToanHD(int idHD, int idKH, double tongTien, int PTTT);
 
-    // Lấy ra số lượng trong hóa dơn chi tiết 
     int getSLSP(int idCTSP, int idHD);
 
-    // update lại giá tiền trong bảng hóa đơn chi tiết 
-    void updateGiaSPHDCT(double giaUpdate, int idCTSP, int idHD);
+    void updateGiaSPHDCT(int soLuong, int idCTSP, int idHD);
 
     void updateGiaSPHDCT_btnSua(double giaUpdate, int idHDCT);
     

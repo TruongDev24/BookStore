@@ -17,20 +17,19 @@ public class HDCTTable {
     private String maSach;
     private String tenSach;
     private int soLuong;
-    private BigDecimal giaBan;
-    private double thanhTien;
+    private double giaBan;
 
     public HDCTTable() {
     }
 
-    public HDCTTable(Integer id, Integer idSachCT, String maSach, String tenSach, int soLuong, BigDecimal giaBan, double thanhTien) {
+    public HDCTTable(Integer id, Integer idSachCT, String maSach, String tenSach, int soLuong, double giaBan) {
         this.id = id;
         this.idSachCT = idSachCT;
         this.maSach = maSach;
         this.tenSach = tenSach;
         this.soLuong = soLuong;
         this.giaBan = giaBan;
-        this.thanhTien = thanhTien;
+//        this.thanhTien = thanhTien;
     }
 
     public Integer getId() {
@@ -73,20 +72,12 @@ public class HDCTTable {
         this.soLuong = soLuong;
     }
 
-    public BigDecimal getGiaBan() {
+    public double getGiaBan() {
         return giaBan;
     }
 
-    public void setGiaBan(BigDecimal giaBan) {
+    public void setGiaBan(double giaBan) {
         this.giaBan = giaBan;
-    }
-
-    public Double getThanhTien() {
-        return thanhTien;
-    }
-
-    public void setThanhTien(double thanhTien) {
-        this.thanhTien = thanhTien;
     }
 
 }
